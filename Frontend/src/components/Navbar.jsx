@@ -26,7 +26,7 @@ const Navbar = () => {
             <p>Logo</p>
             <InputGroup width={"container.md"}>
                 <Input placeholder="Search Query" rounded={"3xl"} />
-                <InputRightElement children={<SearchIcon />} />
+                <InputRightElement children={<SearchIcon marginRight={"14"} />} />
             </InputGroup>
             <HStack>
                 {account ? 

@@ -1,15 +1,15 @@
-const mongoose =require('mongoose')
-const Schema=mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema;
 
-const questionSchema=new Schema({
-    userId:{
-        type:Schema.Types.ObjectId,
-        required:true,
-        ref:'User'
+const questionSchema = new Schema({
+    userId: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
     },
-    content:{
-        type:String,
-        required:true,
+    content: {
+        type: String,
+        required: true,
     },
     // upvotes:{
     //     type:Number,
@@ -21,4 +21,4 @@ const questionSchema=new Schema({
     // }
 
 })
-module.exports=mongoose.model('Question',questionSchema)
+module.exports = mongoose.model('Question', questionSchema)

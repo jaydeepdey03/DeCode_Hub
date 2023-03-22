@@ -4,7 +4,9 @@ const theme = extendTheme({
     initialColorMode: "system",
     useSystemColorMode: false,
     colors: {
-        light: {},
+        light: {
+            
+        },
         dark: {}
     }
 })
