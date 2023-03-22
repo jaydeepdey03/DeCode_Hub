@@ -1,25 +1,35 @@
-import { Avatar, Button, HStack, Input, InputGroup, InputRightElement } from "@chakra-ui/react"
+import { Button, HStack, Input, InputGroup, InputRightElement } from "@chakra-ui/react"
 import { SearchIcon } from "@chakra-ui/icons"
 import './Navbar.css'
-import { connectWallet, getAccount } from "../utils/Wallet"
+import {
+  connectWallet,
+  getActiveAccount,
+  disconnectWallet,
+} from "../utils/Wallet"
 import { useEffect, useState } from "react"
 
 const Navbar = () => {
 
-  const [account, setAccount] = useState("")
+  const [wallet, setWallet] = useState(null);
+
+  const handleConnectWallet = async () => {
+    const { wallet } = await connectWallet();
+    setWallet(wallet);
+  };
+  const handleDisconnectWallet = async () => {
+    const { wallet } = await disconnectWallet();
+    setWallet(wallet);
+  };
 
   useEffect(() => {
-    (async () => {
-      const account = await getAccount();
-      setAccount(account);
-    })();
+    const func = async () => {
+      const account = await getActiveAccount();
+      if (account) {
+        setWallet(account.address);
+      }
+    };
+    func();
   }, []);
-
-  const onConnectWallet = async () => {
-    await connectWallet();
-    const account = await getAccount();
-    setAccount(account);
-  };
 
   return (
     <HStack padding={"7"} display={"flex"} justifyContent={"space-around"}>
@@ -29,13 +39,15 @@ const Navbar = () => {
         <InputRightElement children={<SearchIcon marginRight={"14"} />} />
       </InputGroup>
       <HStack>
-        {account ?
-          <>
-            <Avatar height={"10"} width={"10"} />
-            <p>{account.slice(0, 10) + '...' + account.slice(-4)}</p></>
-          : <Button onClick={onConnectWallet}>Connect Wallet</Button>}
+        <Button onClick={wallet ? handleDisconnectWallet : handleConnectWallet} rounded={"3xl"} colorScheme={"teal"}>
+          {wallet
+            ? wallet.slice(0, 4) +
+            "..." +
+            wallet.slice(wallet.length - 4, wallet.length)
+            : "Connect"}
+        </Button>
       </HStack>
-    </HStack>
+    </HStack >
   )
 }
 

@@ -1,22 +1,58 @@
-// TODO 2.a - Setup beacon wallet instance
 import { BeaconWallet } from "@taquito/beacon-wallet";
 
-export const wallet = new BeaconWallet({
-  name: "Tezos Lottery Dapp",
-  preferredNetwork: "jakartanet",
-});
+const preferredNetwork = "ghostnet";
+const options = {
+  name: "NFT",
+  preferredNetwork: preferredNetwork,
+};
+const wallet = new BeaconWallet(options);
 
-// TODO 2.b - Setup connectWallet function (on jakartanet)
-export const connectWallet = async () => {
-  await wallet.requestPermissions({ network: { type: "jakartanet" } });
+const getActiveAccount = async () => {
+  return await wallet.client.getActiveAccount();
 };
 
-// TODO 2.c - Setup getAccount function
-export const getAccount = async () => {
-  const activeAccount = await wallet.client.getActiveAccount();
-  if (activeAccount) {
-    return activeAccount.address;
-  } else {
-    return "";
+const connectWallet = async () => {
+  let account = await wallet.client.getActiveAccount();
+
+  if (!account) {
+    await wallet.requestPermissions({
+      network: { type: preferredNetwork },
+    });
+    account = await wallet.client.getActiveAccount();
+  }
+  return { success: true, wallet: account.address };
+};
+
+const disconnectWallet = async () => {
+  await wallet.clearActiveAccount();
+  await wallet.disconnect();
+  return { success: true, wallet: null };
+};
+
+const checkIfWalletConnected = async (wallet) => {
+  try {
+    const activeAccount = await wallet.client.getActiveAccount();
+    if (!activeAccount) {
+      await wallet.client.requestPermissions({
+        type: { network: preferredNetwork },
+      });
+    }
+    return {
+      success: true,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error,
+    };
   }
 };
+
+export {
+  connectWallet,
+  disconnectWallet,
+  getActiveAccount,
+  checkIfWalletConnected,
+};
+
+
