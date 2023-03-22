@@ -7,18 +7,23 @@ const questionSchema=new Schema({
         required:true,
         ref:'User'
     },
-    content:{
+    title:{
         type:String,
         required:true,
     },
-    // upvotes:{
-    //     type:Number,
-    //     default:0,
-    // },
-    // downvotes:{
-    //     type:Number,
-    //     default:0
-    // }
+    description:{
+        type:String,
+        required:true,
+    },
+    code:{
+        type:String,
+    },
+    codeLanguage:{
+      type: String  
+    },
+    image:{
+        type: String
+    }  
 
 })
 module.exports=mongoose.model('Question',questionSchema)
