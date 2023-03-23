@@ -18,5 +18,4 @@ router.post('/signup',async(req,res)=>{
         return res.json(err).status(500)
     }
 })
-
 module.exports=router;

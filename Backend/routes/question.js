@@ -38,18 +38,17 @@ router.get('/get-question',async(req,res)=>{
 
 })
 
-router.get('/get-question/:id',async(req,res)=>{
+router.get('/get-question/:id', async (req, res) => {
     try {
-
-        console.log(req.params.id);
-    const res = await Question.find({"userId": new mongodb.ObjectId(req.params.id)})
-    return res.json(res).status(200)
-}
-    catch(err)
-    {
-        return res.json(err).status(500)
+      console.log(req.params.id);
+      const question = await Question.find({"_id": new mongodb.ObjectId(req.params.id)});
+      return res.json(question).status(200);
+    } catch (err) {
+      console.error(err);
+      return res.json(err).status(500);
     }
-})
+  });
+  
 
 router.delete('/delete-question/:id',async(req,res)=>{
     try {
