@@ -78,5 +78,71 @@ router.post('/downvote/:id', async (req, res) => {
       res.status(500).send('Server Error');
     }
   });
+router.get('/upvotes/:id', async (req, res) => {
+    try {
+      const answerId = req.params.id;
+      const answer = await Answer.findById(answerId);
+      res.json({ length: answer.upvotes.length });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+});
+router.get('/downvotes/:id', async (req, res) => {
+    try {
+      const answerId = req.params.id;
+      const answer = await Answer.findById(answerId);
+      res.json({ length: answer.downvotes.length });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  });
+router.put('/modify/:id', async (req, res) => {
+    try {
+        const answerId = req.params.id;
+        const { content,userId } = req.body;
+        const answer = await Answer.findById(answerId);
+    
+        if (!answer) {
+          return res.status(404).json({ msg: 'Answer not found' });
+        }
+    
+        // Check if authenticated user is the same as the user who posted the answer
+        if (answer.userId.toString() !== userId) {
+          return res.status(401).json({ msg: 'Not authorized' });
+        }
+    
+        answer.content = content;
+        await answer.save();
+    
+        res.json(answer);
+      } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+router.delete('/delete/:id', async (req, res) => {
+    try {
+      const answerId = req.params.id;
+      const answer = await Answer.findById(answerId);
+  
+      if (!answer) {
+        return res.status(404).json({ msg: 'Answer not found' });
+      }
+  
+      // Check if authenticated user is the same as the user who posted the answer
+      if (answer.userId.toString() !== req.body.userId) {
+        return res.status(401).json({ msg: 'Not authorized' });
+      }
+  
+      await Answer.deleteOne({ _id: answerId });
+  
+      res.json({ msg: 'Answer removed' });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+});
 
 module.exports=router;
