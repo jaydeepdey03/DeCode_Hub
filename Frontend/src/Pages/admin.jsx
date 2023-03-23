@@ -1,11 +1,10 @@
-import { Avatar, Button, Card, CardBody, HStack, Text, VStack } from "@chakra-ui/react"
 import MintRequest from "../components/MintRequest"
 import Navbar from "../components/Navbar"
 
 const Admin = () => {
     return (
         <div>
-            <Navbar queryBar={false}/>
+            <Navbar queryBar={false} isAdmin={true}/>
             <MintRequest />
             <MintRequest />
             <MintRequest />
