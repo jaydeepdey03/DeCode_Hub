@@ -4,9 +4,24 @@ import Home from './Pages/Home';
 import Queries from './Pages/Queries';
 import ErrorPage from './Pages/404';
 import Answer from './Pages/Answer';
-import Admin from './Pages/admin';
+import Admin from './Pages/Admin';
+import useGlobalContext from './hooks/useGlobalContext';
+import { useEffect, useState } from 'react';
 
 function App() {
+
+
+  const { walletaddress } = useGlobalContext();
+  const address = "tz1hxTwWPfqAAmqp9RiXoWBi1pTLteHD6eaN";
+
+  const [isAdmin, setisAdmin] = useState(false);
+
+  useEffect(() => {
+    if (walletaddress === address) {
+      setisAdmin(true);
+    }
+  }, [walletaddress]);
+
   return (
     <>
       <Routes>
