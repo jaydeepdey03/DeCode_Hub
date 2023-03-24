@@ -4,7 +4,7 @@ import Home from './Pages/Home';
 import Queries from './Pages/Queries';
 import ErrorPage from './Pages/404';
 import Answer from './Pages/Answer';
-import Admin from './Pages/Admin';
+import Admin from './Pages/AdminPage';
 import useGlobalContext from './hooks/useGlobalContext';
 import { useEffect, useState } from 'react';
 
