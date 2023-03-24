@@ -1,10 +1,11 @@
-import { Button, HStack, Input, InputGroup, InputRightElement } from "@chakra-ui/react"
+import { Button, HStack, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react"
 import { SearchIcon } from "@chakra-ui/icons"
 import './Navbar.css'
+import ToggleTheme from "./ToggleTheme"
 import { useEffect } from "react"
 import useGlobalContext from "../hooks/useGlobalContext"
 
-const Navbar = () => {
+const Navbar = ({ queryBar, isAdmin }) => {
 
   const { walletaddress, setWalletaddress, connectWallet, getActiveAccount, disconnectWallet } = useGlobalContext();
 
@@ -28,21 +29,22 @@ const Navbar = () => {
   }, [walletaddress, setWalletaddress, getActiveAccount]);
 
   return (
-    <HStack padding={"7"} display={"flex"} justifyContent={"space-around"}>
-      <p>Logo</p>
-      <InputGroup width={"container.md"}>
+    <HStack padding={"7"} display={"flex"} justifyContent={"space-between"}>
+      <Text as="b" fontSize={"2xl"} color={"white"}>Logo</Text>
+      {queryBar ? <InputGroup width={"container.md"}>
         <Input placeholder="Search Query" rounded={"3xl"} />
-        <InputRightElement children={<SearchIcon marginRight={"14"} />} />
-      </InputGroup>
+        <InputRightElement children={<SearchIcon marginRight={"3"} />} />
+      </InputGroup> : isAdmin && <Text fontSize={"lg"} as="b">Admin Page</Text>}
       <HStack>
-        <Button onClick={walletaddress ? handleDisconnectWallet : handleConnectWallet} rounded={"3xl"} colorScheme={"teal"}>
+        {/* <ToggleTheme /> */}
+        <Button width={"44"} onClick={walletaddress ? handleDisconnectWallet : handleConnectWallet} rounded={"3xl"} colorScheme={"blue"}>
           {walletaddress
-            ? walletaddress.slice(0, 4) +
+            ? walletaddress.slice(0, 8) +
             "..." +
             walletaddress.slice(walletaddress.length - 4, walletaddress.length)
             : "Connect"}
         </Button>
-      </HStack>
+      </HStack >
     </HStack >
   )
 }
