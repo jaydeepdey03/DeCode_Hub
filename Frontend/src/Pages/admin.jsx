@@ -1,11 +1,15 @@
-import React from 'react'
-import Navbar from '../components/Navbar'
+import MintRequest from "../components/MintRequest"
+import Navbar from "../components/Navbar"
 
-function Admin() {
+const Admin = () => {
     return (
         <div>
-            <Navbar />
-            Admin
+            <Navbar queryBar={false} isAdmin={true} />
+            <MintRequest />
+            <MintRequest />
+            <MintRequest />
+            <MintRequest />
+            <MintRequest />
         </div>
     )
 }
