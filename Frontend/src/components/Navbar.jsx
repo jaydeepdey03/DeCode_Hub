@@ -41,7 +41,7 @@ const Navbar = ({ queryBar, isAdmin }) => {
           {walletaddress
             ? walletaddress.slice(0, 8) +
             "..." +
-            walletaddress.slice(walletaddress.length - 4, walletaddress.length)
+            walletaddress.slice(-4)
             : "Connect"}
         </Button>
       </HStack >

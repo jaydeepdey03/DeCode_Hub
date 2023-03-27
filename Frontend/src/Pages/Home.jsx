@@ -18,7 +18,9 @@ const Home = () => {
                         <Text fontWeight={"extrabold"} color={"white"} fontSize='5xl'>Solve problems,</Text>
                         <Text fontWeight={"extrabold"} fontSize='4xl' className="nft">earn NFTs!</Text>
                         <Heading marginBottom={"5"} size={"md"} color={"white"}>Get rewarded for helping others.</Heading>
-                        <Button marginBottom={"5"} width={"xs"} leftIcon={<Temple height={"27"} />} backgroundColor={"#D98353"} color={"white"}>Connect to template</Button>
+                        <Button marginBottom={"5"} width={"xs"} leftIcon={<Temple height={"27"} />} backgroundColor={"#FE8542"} color={"white"} variant={"ghost"}>
+                            Connect to temple
+                        </Button>
                     </Flex>
                     <Success height={"30rem"} />
                 </HStack>
