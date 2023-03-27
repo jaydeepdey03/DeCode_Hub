@@ -7,7 +7,7 @@ import useGlobalContext from "../hooks/useGlobalContext"
 
 const Navbar = ({ queryBar, isAdmin }) => {
 
-  const { walletaddress, setWalletaddress, connectWallet, getActiveAccount, disconnectWallet } = useGlobalContext();
+  const { walletaddress, setWalletaddress, connectWallet, getActiveAccount, disconnectWallet, getUserId } = useGlobalContext();
 
   const handleConnectWallet = async () => {
     const { wallet } = await connectWallet();
@@ -27,6 +27,13 @@ const Navbar = ({ queryBar, isAdmin }) => {
     };
     func();
   }, [walletaddress, setWalletaddress, getActiveAccount]);
+
+  // backend
+
+  useEffect(() => {
+    getUserId();
+  }, [walletaddress])
+
 
   return (
     <HStack padding={"7"} display={"flex"} justifyContent={"space-between"}>

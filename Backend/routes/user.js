@@ -4,16 +4,22 @@ const User = require('../models/user')
 
 router.post('/signup', async (req, res) => {
     const address = req.body.address
+    console.log(address)
+    const existingUser = await User.findOne({ account: address })
+    if (existingUser) {
+      return res.status(409).json({ message: 'User already exists' })
+    }
+  
     const user = new User({
-        account: address
+      account: address
     })
     try {
-        const newUser = await user.save()
-        return res.json(newUser).status(200)
+      const newUser = await user.save()
+      return res.json(newUser).status(200)
     }
     catch (err) {
-        console.log(err)
-        return res.json(err).status(500)
+      console.log(err)
+      return res.json(err).status(500)
     }
-})
+})  
 module.exports = router;
