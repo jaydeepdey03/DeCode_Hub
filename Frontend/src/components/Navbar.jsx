@@ -31,8 +31,8 @@ const Navbar = ({ queryBar, isAdmin }) => {
   return (
     <HStack padding={"7"} display={"flex"} justifyContent={"space-between"}>
       <Text as="b" fontSize={"2xl"} color={"white"}>Logo</Text>
-      {queryBar ? <InputGroup width={"container.md"}>
-        <Input placeholder="Search Query" rounded={"3xl"} />
+      {queryBar ? <InputGroup width={"container.md"} >
+        <Input placeholder="Search Query" rounded={"3xl"} backgroundColor={"white"} />
         <InputRightElement children={<SearchIcon marginRight={"3"} />} />
       </InputGroup> : isAdmin && <Text fontSize={"lg"} color={"white"} as="b">Admin Page</Text>}
       <HStack>

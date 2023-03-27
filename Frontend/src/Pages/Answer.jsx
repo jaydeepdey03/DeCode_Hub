@@ -6,7 +6,7 @@ import AnswerCard from "../components/AnswerCard"
 
 const Answer = () => {
     return (
-        <div>
+        <Box bg="background" height={"100%"} padding={"2"}>
             <Navbar queryBar={false} isAdmin={false} />
             <Center marginBottom={"7"}>
                 <VStack>
@@ -14,7 +14,7 @@ const Answer = () => {
                     <AnswerCard />
                 </VStack>
             </Center>
-        </div >
+        </Box>
     )
 }
 
