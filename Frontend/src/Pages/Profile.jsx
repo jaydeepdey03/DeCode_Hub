@@ -28,9 +28,9 @@ function Profile() {
 
     return (
         <>
-            {userNfts.map((nft) => {
+            {userNfts.map((nft, idx) => {
                 return (
-                    <div>
+                    <div key={idx}>
                         <h1>{nft.key.nat}</h1>
                         <h1>{nft.key.address}</h1>
                         {/* image  */}
