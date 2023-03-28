@@ -1,4 +1,4 @@
-import { Heading, Text, VStack } from "@chakra-ui/react"
+import { Box, Heading, Text, VStack } from "@chakra-ui/react"
 import Navbar from "../components/Navbar"
 import QueryCard from "../components/QueryCard"
 import { useEffect, useState } from 'react'
@@ -18,10 +18,10 @@ const Query = () => {
     }, []);
 
     return (
-        <div>
-            <Navbar queryBar={true} />
+        <Box bg="background" height={"100%"}>
+            <Navbar queryBar={true}/>
             <VStack padding={"6"}>
-                <Heading>Top Queries</Heading>
+                <Heading color={"white"} marginBottom={"10"}>Top Queries</Heading>
 
                 {questions.map((question) => (
                     <Link to={`/answer/${question._id}`}>
@@ -36,7 +36,8 @@ const Query = () => {
                     </Link>
                 ))}
             </VStack>
-        </div>
-    );
-};
-export default Query;
+        </Box>
+    )
+}
+
+export default Query

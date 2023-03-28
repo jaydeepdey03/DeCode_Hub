@@ -1,4 +1,4 @@
-import axios from "axios"
+import { Box } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import MintRequest from "../components/MintRequest"
 import Navbar from "../components/Navbar"
@@ -18,14 +18,14 @@ const Admin = () => {
         getRequests();
     }, []);
     return (
-        <div>
+        <Box bg={"background"} height={"100%"}>
             <Navbar queryBar={false} isAdmin={true} />
             <MintRequest />
             {
                 requests.map((req, idx) => (<MintRequest key={idx} address={req.address} nftType={req.nftType} />))
             }
 
-        </div>
+        </Box>
     )
 }
 

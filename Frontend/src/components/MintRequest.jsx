@@ -55,7 +55,7 @@ const MintRequest = () => {
 
     return (
         <div>
-            <VStack marginBottom={"8"}>
+            <VStack padding={"5"}>
                 <Card width={"4xl"}>
                     <CardBody display={"flex"} justifyContent={"space-between"}>
                         <HStack>

@@ -37,7 +37,7 @@ const Navbar = ({ queryBar, isAdmin }) => {
 
 
   return (
-    <HStack padding={"7"} display={"flex"} justifyContent={"space-between"} position="fixed" width="100%">
+    <HStack padding={"7"} display={"flex"} justifyContent={"space-between"}>
       <Text as="b" fontSize={"2xl"} color={"white"}>Logo</Text>
       {queryBar ? <InputGroup width={"container.md"}>
         <Input placeholder="Search Query" rounded={"3xl"} />
@@ -57,4 +57,4 @@ const Navbar = ({ queryBar, isAdmin }) => {
   )
 }
 
-export default Navbar
+export default Navbar;

@@ -6,16 +6,21 @@ import { useParams } from "react-router-dom"
 
 const Answer = () => {
     const { id } = useParams()
+    // get question for id
+
+    // get answers for this question id
+
     return (
-        <div>
+        <Box bg="background" height={"100%"} padding={"2"}>
             <Navbar queryBar={false} isAdmin={false} />
             <Center marginBottom={"7"}>
                 <VStack>
                     <QuestionCard id={id} />
+                    {/* map all the answers */}
                     <AnswerCard />
                 </VStack>
             </Center>
-        </div >
+        </Box>
     )
 }
 
