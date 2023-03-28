@@ -4,26 +4,78 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 import { FiThumbsUp, FiThumbsDown } from 'react-icons/fi'
 import { HiThumbDown, HiThumbUp } from 'react-icons/hi'
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import useGlobalContext from "../hooks/useGlobalContext";
 
-const AnswerCard = () => {
+const AnswerCard = (props) => {
     const [toggleLike, setToggleLike] = useState(false)
     const [toggleDisLike, setToggleDisLike] = useState(false)
-    const [count, setCount] = useState(5)
-    const [countDislike, setcountDislike] = useState(-5)
-    const codeString = `#include <string.h> 
-char *strrev(char *str) 
-{ 
-    char *p1, *p2; 
-    if (! str || ! *str) 
-            return str; 
-    for (p1 = str, p2 = str + strlen(str) - 1; p2 > p1; ++p1, --p2) { 
-            *p1 ^= *p2; 
-            *p2 ^= *p1; 
-            *p1 ^= *p2; 
-    } 
-    return str; 
-}`;
+
+    const [countLike, setCountLike] = useState(props.upvotes.length)
+    const [countDislike, setcountDislike] = useState(props.downvotes.length)
+
+    const {userId} = useGlobalContext();
+    console.log("userId-------",  userId)
+    const codeString = props.content
+
+    useEffect(() => {
+        console.log(props.upvotes)
+        props.upvotes.map((val,ind)=>{
+            if(val.upvote===userId)
+            {
+                setToggleLike(true)
+                setToggleDisLike(false)
+            }
+        })
+
+        console.log(props.downvotes)
+        props.downvotes.map((val,ind)=>{
+            if(val.downvote===userId
+                )
+            {
+                setToggleDisLike(true)
+                setToggleLike(false)
+            }
+        })
+        
+    }, [userId])
+
+    const upClick=async()=>{
+        try {
+        
+        await axios.post(`http://localhost:4000/answer/upvote/${props.id}`,{
+            userId: userId
+        })
+        const totalupClicks=await axios.get(`http://localhost:4000/answer/upvotes/${props.id}`)
+        setCountLike(totalupClicks.data.length)
+        
+        const totaldownClicks=await axios.get(`http://localhost:4000/answer/downvotes/${props.id}`)
+        setcountDislike(totaldownClicks.data.length)
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const downClick=async()=>{
+        try {
+        
+        await axios.post(`http://localhost:4000/answer/downvote/${props.id}`,{
+            userId:userId
+        })
+        const totalupClicks=await axios.get(`http://localhost:4000/answer/upvotes/${props.id}`)
+        setCountLike(totalupClicks.data.length)
+        
+        const totaldownClicks=await axios.get(`http://localhost:4000/answer/downvotes/${props.id}`)
+        setcountDislike(totaldownClicks.data.length)
+        
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <Card width={"3xl"} padding={"5"}>
             <CardBody>
@@ -44,29 +96,42 @@ char *strrev(char *str)
                         <Avatar size={"sm"} />
                         <Box display={"flex"} flexDirection={"column"}>
                             <Text fontSize={"smaller"}>Fidal Mathew</Text>
-                            <Text fontSize={"smaller"}>tz1gXMk...tuJtASRKwddY</Text>
+                            <Text fontSize={"smaller"}></Text>
                         </Box>
                     </HStack>
                     <HStack alignItems={"center"}>
-                        {!toggleLike ? <FiThumbsUp onClick={() => {
-                            setToggleLike(prev => !prev)
-                            setCount(prev => prev + 1)
-                        }
-                        } /> : <HiThumbUp onClick={() => {
-                            setToggleLike(prev => !prev)
-                            setCount(prev => prev - 1)
-                        }
-                        } />}
-                        <Text>{count}</Text>
-                        {!toggleDisLike ? <FiThumbsDown onClick={() => {
-                            setToggleDisLike(prev => !prev)
-                            setcountDislike(prev => prev - 1)
-                        }
-                        } /> : <HiThumbDown onClick={() => {
-                            setToggleDisLike(prev => !prev)
-                            setcountDislike(prev => prev + 1)
-                        }
-                        } />}
+                        {!toggleLike ? <FiThumbsUp onClick={()=>{
+
+                            upClick()
+                            setToggleLike(true)
+                            setToggleDisLike(false)
+                        } 
+                        } /> : <HiThumbUp 
+                            onClick={
+                                ()=>{
+                                    upClick()
+                                    setToggleLike(false)
+                                    setToggleDisLike(false)
+                                }
+                            }
+                        />}
+                        <Text>{countLike}</Text>
+                        {!toggleDisLike ? <FiThumbsDown 
+                        onClick={
+                            ()=>{
+                                downClick()
+                                setToggleDisLike(true)
+                                setToggleLike(false)
+                            }
+                        } /> : <HiThumbDown 
+                            onClick={
+                                ()=>{
+                                downClick()
+                                setToggleDisLike(false)
+                                setToggleLike(false)
+                                }
+                            }
+                        />}
                         <Text>{countDislike}</Text>
                     </HStack>
                 </Flex>

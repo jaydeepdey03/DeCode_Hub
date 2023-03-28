@@ -80,7 +80,8 @@ const GlobalContextProvider = ({ children }) => {
             const user = await axios.post('http://localhost:4000/user/signup', {
                 address: walletaddress
             });
-            console.log(user);
+            console.log(user.data._id);
+            setUserId(user.data._id);
         }
         catch (error) {
             console.error(error);
@@ -97,6 +98,7 @@ const GlobalContextProvider = ({ children }) => {
             getActiveAccount,
             checkIfWalletConnected,
             Tezos,
+            userId,
             getUserId
         }}>
             {children}
