@@ -1,17 +1,32 @@
 import { createContext, useState } from "react";
 import { BeaconWallet } from "@taquito/beacon-wallet";
+import { TezosToolkit } from "@taquito/taquito";
+
+
+// export const contractAddress = "KT1NSMmpfLZUBY4naxi4CKQ4dhU692F59G3t"
+
 
 export const Context = createContext();
 
 const GlobalContextProvider = ({ children }) => {
 
+
     const [walletaddress, setWalletaddress] = useState(null);
+
+    // initialization 
+
     const preferredNetwork = "ghostnet";
     const options = {
         name: "NFT",
         preferredNetwork: preferredNetwork,
     };
     const wallet = new BeaconWallet(options);
+
+    const Tezos = new TezosToolkit("https://ghostnet.smartpy.io");
+    Tezos.setWalletProvider(wallet);
+
+
+    // function calls 
 
     const getActiveAccount = async () => {
         return await wallet.client.getActiveAccount();
@@ -62,6 +77,7 @@ const GlobalContextProvider = ({ children }) => {
             disconnectWallet,
             getActiveAccount,
             checkIfWalletConnected,
+            Tezos
         }}>
             {children}
         </Context.Provider>

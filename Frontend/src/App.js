@@ -7,6 +7,7 @@ import Answer from './Pages/Answer';
 import Admin from './Pages/AdminPage';
 import useGlobalContext from './hooks/useGlobalContext';
 import { useEffect, useState } from 'react';
+import Profile from './Pages/Profile';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/query" element={<Queries />} />
         <Route path="/answer" element={<Answer />} />
         <Route path="/admin" element={<Admin />} />
