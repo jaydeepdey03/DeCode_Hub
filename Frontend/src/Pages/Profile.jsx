@@ -1,6 +1,7 @@
 import { bytes2Char, char2Bytes } from '@taquito/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Navbar from '../components/Navbar';
 import GlobalContextProvider from '../context/GlobalContext';
 // import { contractAddress } from '../utils/Tezos';
 
@@ -28,6 +29,7 @@ function Profile() {
 
     return (
         <>
+            <Navbar />
             {userNfts.map((nft, idx) => {
                 return (
                     <div key={idx}>
