@@ -25,8 +25,7 @@ const Admin = () => {
             {
                 requests.map((req, idx) => (<MintRequest key={idx} address={req.address} nftType={req.nftType} />))
             }
-
-        </div>
+        </Box>
     )
 }
 
