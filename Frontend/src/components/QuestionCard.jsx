@@ -3,7 +3,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 
-const QuesionCard = () => {
+const QuesionCard = ({id}) => {
     return (
         <Card width={"3xl"} padding={"5"}>
             <CardBody>
@@ -15,6 +15,7 @@ const QuesionCard = () => {
                             <Text>Asked by: </Text>
                             <Text>tz1gXMk...tuJtASRKwddY</Text>
                         </Flex>
+                            <Text>{id}</Text>
                     </Box>
                     <Button>Answer Now</Button>
                 </HStack>

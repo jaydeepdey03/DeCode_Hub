@@ -31,6 +31,7 @@ const Navbar = ({ queryBar, isAdmin }) => {
   // backend
 
   useEffect(() => {
+    if(walletaddress)
     getUserId();
   }, [walletaddress])
 

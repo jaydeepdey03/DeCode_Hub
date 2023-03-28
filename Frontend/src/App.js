@@ -27,7 +27,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/query" element={<Queries />} />
-        <Route path="/answer" element={<Answer />} />
+        <Route path="/answer/:id" element={<Answer />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
