@@ -5,6 +5,7 @@ import { TezosToolkit } from "@taquito/taquito";
 
 // export const contractAddress = "KT1NSMmpfLZUBY4naxi4CKQ4dhU692F59G3t"
 
+import axios from "axios";
 
 export const Context = createContext();
 
@@ -14,6 +15,7 @@ const GlobalContextProvider = ({ children }) => {
     const [walletaddress, setWalletaddress] = useState(null);
 
     // initialization 
+    const [userId, setUserId] = useState(null);
 
     const preferredNetwork = "ghostnet";
     const options = {
@@ -69,6 +71,23 @@ const GlobalContextProvider = ({ children }) => {
         }
     };
 
+    // backend methods
+    const URL = "localhost:4000"
+
+    const getUserId = async () => {
+        try {
+
+            const user = await axios.post('http://localhost:4000/user/signup', {
+                address: walletaddress
+            });
+            console.log(user);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
+
     return (
         <Context.Provider value={{
             walletaddress,
@@ -77,7 +96,8 @@ const GlobalContextProvider = ({ children }) => {
             disconnectWallet,
             getActiveAccount,
             checkIfWalletConnected,
-            Tezos
+            Tezos,
+            getUserId
         }}>
             {children}
         </Context.Provider>
