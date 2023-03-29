@@ -29,12 +29,12 @@ const AskQuestion = () => {
 
     return (
         <>
-            <Navbar />
             <Box bg={"background"} height={"100%"}>
+                <Navbar />
                 <Center>
-                    <VStack padding={"10"} color={"white"} width={"2xl"}>
+                    <VStack padding={"10"} color={"white"} maxWidth="sm">
                         <Heading>Ask Question</Heading>
-                        <FormControl color="white" width={"4xl"} onSubmit={handleSubmit}>
+                        <FormControl color="white" width={"xl"} onSubmit={handleSubmit}>
                             <FormLabel>Title</FormLabel>
                             <Input color={"black"} name="title" onChange={handleOnChange} marginBottom={"4"} backgroundColor="white" placeholder='Enter your Question' />
                             <FormLabel>Code</FormLabel>

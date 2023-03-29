@@ -58,6 +58,9 @@ const Navbar = ({ queryBar, isAdmin }) => {
             walletAddress.slice(walletAddress.length - 4, walletAddress.length)
             : "Connect"}
         </Button> */}
+        {/* Add an ask question button on when wallet address is present */}
+
+        {walletAddress && <Button colorScheme={"teal"} color={"white"} onClick={() => navigate('/askQuestion')} rounded={"3xl"}>Ask Question</Button>}
 
         {!walletAddress ? <Button leftIcon={<Temple height={"27"} />} backgroundColor={"#FE8542"} color={"white"} onClick={handleConnectWallet} rounded={"3xl"}>
           Connect Wallet
