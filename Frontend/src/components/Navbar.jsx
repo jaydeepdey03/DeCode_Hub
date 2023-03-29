@@ -5,7 +5,7 @@ import ToggleTheme from "./ToggleTheme"
 import { useEffect } from "react"
 import useGlobalContext from "../hooks/useGlobalContext"
 import { ReactComponent as Temple } from '../assets/temple.svg';
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 const Navbar = ({ queryBar, isAdmin }) => {
 
@@ -37,8 +37,10 @@ const Navbar = ({ queryBar, isAdmin }) => {
       getUserId();
   }, [walletAddress, getUserId])
 
+  const navigate = useNavigate()
 
   return (
+
     <HStack padding={"7"} display={"flex"} justifyContent={"space-between"}>
       <Text as="b" fontSize={"2xl"} marginLeft="10" color={"white"}>
         <Link to="/">Logo</Link>
@@ -60,14 +62,15 @@ const Navbar = ({ queryBar, isAdmin }) => {
         {!walletAddress ? <Button leftIcon={<Temple height={"27"} />} backgroundColor={"#FE8542"} color={"white"} onClick={handleConnectWallet} rounded={"3xl"}>
           Connect Wallet
         </Button> :
-            <Menu>
-              <MenuButton as={Button} rounded={"3xl"} colorScheme={"blue"}>
-                {walletAddress.slice(0, 8) + "..." + walletAddress.slice(-4)}
-              </MenuButton>
-              <MenuList>
-                <MenuItem onClick={handleDisconnectWallet}>Disconnect</MenuItem>
-              </MenuList>
-            </Menu>}
+          <Menu>
+            <MenuButton as={Button} rounded={"3xl"} colorScheme={"blue"}>
+              {walletAddress.slice(0, 8) + "..." + walletAddress.slice(-4)}
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
+              <MenuItem onClick={handleDisconnectWallet}>Disconnect</MenuItem>
+            </MenuList>
+          </Menu>}
       </HStack >
     </HStack >
   )
