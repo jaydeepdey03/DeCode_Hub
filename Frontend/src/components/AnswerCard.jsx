@@ -15,43 +15,43 @@ const AnswerCard = (props) => {
     const [countLike, setCountLike] = useState(props.upvotes.length)
     const [countDislike, setcountDislike] = useState(props.downvotes.length)
 
-    const {userId} = useGlobalContext();
-    console.log("userId-------",  userId)
+    const { userId } = useGlobalContext();
+    console.log("userId-------", userId)
     const codeString = props.content
 
     useEffect(() => {
         console.log(props.upvotes)
-        props.upvotes.map((val,ind)=>{
-            if(val.upvote===userId)
-            {
+        // eslint-disable-next-line array-callback-return
+        props.upvotes.map((val, ind) => {
+            if (val.upvote === userId) {
                 setToggleLike(true)
                 setToggleDisLike(false)
             }
         })
 
         console.log(props.downvotes)
-        props.downvotes.map((val,ind)=>{
-            if(val.downvote===userId
-                )
-            {
+        // eslint-disable-next-line array-callback-return
+        props.downvotes.map((val, ind) => {
+            if (val.downvote === userId
+            ) {
                 setToggleDisLike(true)
                 setToggleLike(false)
             }
         })
-        
-    }, [userId])
 
-    const upClick=async()=>{
+    }, [userId, props.upvotes, props.downvotes])
+
+    const upClick = async () => {
         try {
-        
-        await axios.post(`http://localhost:4000/answer/upvote/${props.id}`,{
-            userId: userId
-        })
-        const totalupClicks=await axios.get(`http://localhost:4000/answer/upvotes/${props.id}`)
-        setCountLike(totalupClicks.data.length)
-        
-        const totaldownClicks=await axios.get(`http://localhost:4000/answer/downvotes/${props.id}`)
-        setcountDislike(totaldownClicks.data.length)
+
+            await axios.post(`http://localhost:4000/answer/upvote/${props.id}`, {
+                userId: userId
+            })
+            const totalupClicks = await axios.get(`http://localhost:4000/answer/upvotes/${props.id}`)
+            setCountLike(totalupClicks.data.length)
+
+            const totaldownClicks = await axios.get(`http://localhost:4000/answer/downvotes/${props.id}`)
+            setcountDislike(totaldownClicks.data.length)
 
         } catch (error) {
             console.log(error)
@@ -59,18 +59,18 @@ const AnswerCard = (props) => {
     }
 
 
-    const downClick=async()=>{
+    const downClick = async () => {
         try {
-        
-        await axios.post(`http://localhost:4000/answer/downvote/${props.id}`,{
-            userId:userId
-        })
-        const totalupClicks=await axios.get(`http://localhost:4000/answer/upvotes/${props.id}`)
-        setCountLike(totalupClicks.data.length)
-        
-        const totaldownClicks=await axios.get(`http://localhost:4000/answer/downvotes/${props.id}`)
-        setcountDislike(totaldownClicks.data.length)
-        
+
+            await axios.post(`http://localhost:4000/answer/downvote/${props.id}`, {
+                userId: userId
+            })
+            const totalupClicks = await axios.get(`http://localhost:4000/answer/upvotes/${props.id}`)
+            setCountLike(totalupClicks.data.length)
+
+            const totaldownClicks = await axios.get(`http://localhost:4000/answer/downvotes/${props.id}`)
+            setcountDislike(totaldownClicks.data.length)
+
         } catch (error) {
             console.log(error)
         }
@@ -100,15 +100,15 @@ const AnswerCard = (props) => {
                         </Box>
                     </HStack>
                     <HStack alignItems={"center"}>
-                        {!toggleLike ? <FiThumbsUp onClick={()=>{
+                        {!toggleLike ? <FiThumbsUp onClick={() => {
 
                             upClick()
                             setToggleLike(true)
                             setToggleDisLike(false)
-                        } 
-                        } /> : <HiThumbUp 
+                        }
+                        } /> : <HiThumbUp
                             onClick={
-                                ()=>{
+                                () => {
                                     upClick()
                                     setToggleLike(false)
                                     setToggleDisLike(false)
@@ -116,19 +116,19 @@ const AnswerCard = (props) => {
                             }
                         />}
                         <Text>{countLike}</Text>
-                        {!toggleDisLike ? <FiThumbsDown 
-                        onClick={
-                            ()=>{
-                                downClick()
-                                setToggleDisLike(true)
-                                setToggleLike(false)
-                            }
-                        } /> : <HiThumbDown 
+                        {!toggleDisLike ? <FiThumbsDown
                             onClick={
-                                ()=>{
-                                downClick()
-                                setToggleDisLike(false)
-                                setToggleLike(false)
+                                () => {
+                                    downClick()
+                                    setToggleDisLike(true)
+                                    setToggleLike(false)
+                                }
+                            } /> : <HiThumbDown
+                            onClick={
+                                () => {
+                                    downClick()
+                                    setToggleDisLike(false)
+                                    setToggleLike(false)
                                 }
                             }
                         />}

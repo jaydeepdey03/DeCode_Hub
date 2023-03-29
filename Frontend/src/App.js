@@ -8,29 +8,30 @@ import Admin from './Pages/AdminPage';
 import useGlobalContext from './hooks/useGlobalContext';
 import { useEffect, useState } from 'react';
 import Profile from './Pages/Profile';
+import Query from './Pages/Queries';
 
 function App() {
 
 
-  const { walletaddress } = useGlobalContext();
+  const { walletAddress } = useGlobalContext();
   const address = "tz1hxTwWPfqAAmqp9RiXoWBi1pTLteHD6eaN";
 
   const [isAdmin, setisAdmin] = useState(false);
 
   useEffect(() => {
-    if (walletaddress === address) {
+    if (walletAddress === address) {
       setisAdmin(true);
     }
-  }, [walletaddress]);
+  }, [walletAddress]);
 
   return (
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/query" element={<Queries />} />
-        <Route path="/answer/:id" element={<Answer />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/profile" element={walletAddress ? <Profile /> : <Home />} />
+        <Route path="/query" element={walletAddress ? <Query /> : <Home />} />
+        <Route path="/answer/:id" element={walletAddress ? <Answer /> : <Home />} />
+        <Route path="/admin" element={walletAddress ? <Admin /> : <Home />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </>

@@ -1,17 +1,28 @@
 import { bytes2Char, char2Bytes } from '@taquito/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import GlobalContextProvider from '../context/GlobalContext';
+import useGlobalContext from '../hooks/useGlobalContext';
 // import { contractAddress } from '../utils/Tezos';
 
 function Profile() {
 
     const contractAddress = "KT1NSMmpfLZUBY4naxi4CKQ4dhU692F59G3t"
-    const walletAddress = "tz1hxTwWPfqAAmqp9RiXoWBi1pTLteHD6eaN"
     // get NFTs by owner
 
     const [userNfts, setUserNfts] = useState([])
+
+
+    const { walletAddress } = useGlobalContext();
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!walletAddress)
+            navigate('/', { replace: true });
+    }, [walletAddress, navigate])
+
+
 
     const getNFTsByOwner = async () => {
         const response = await axios.get(

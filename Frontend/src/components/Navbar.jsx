@@ -7,33 +7,33 @@ import useGlobalContext from "../hooks/useGlobalContext"
 
 const Navbar = ({ queryBar, isAdmin }) => {
 
-  const { walletaddress, setWalletaddress, connectWallet, getActiveAccount, disconnectWallet, getUserId } = useGlobalContext();
+  const { walletAddress, setWalletAddress, connectWallet, getActiveAccount, disconnectWallet, getUserId } = useGlobalContext();
 
   const handleConnectWallet = async () => {
     const { wallet } = await connectWallet();
-    setWalletaddress(wallet);
+    setWalletAddress(wallet);
   };
   const handleDisconnectWallet = async () => {
     const { wallet } = await disconnectWallet();
-    setWalletaddress(wallet);
+    setWalletAddress(wallet);
   };
 
   useEffect(() => {
     const func = async () => {
       const account = await getActiveAccount();
       if (account) {
-        setWalletaddress(account.address);
+        setWalletAddress(account.address);
       }
     };
     func();
-  }, [walletaddress, setWalletaddress, getActiveAccount]);
+  }, [walletAddress, setWalletAddress, getActiveAccount]);
 
   // backend
 
   useEffect(() => {
-    if(walletaddress)
-    getUserId();
-  }, [walletaddress])
+    if (walletAddress)
+      getUserId();
+  }, [walletAddress, getUserId])
 
 
   return (
@@ -45,11 +45,11 @@ const Navbar = ({ queryBar, isAdmin }) => {
       </InputGroup> : isAdmin && <Text fontSize={"lg"} as="b">Admin Page</Text>}
       <HStack>
         {/* <ToggleTheme /> */}
-        <Button width={"44"} onClick={walletaddress ? handleDisconnectWallet : handleConnectWallet} rounded={"3xl"} colorScheme={"blue"}>
-          {walletaddress
-            ? walletaddress.slice(0, 8) +
+        <Button width={"44"} onClick={walletAddress ? handleDisconnectWallet : handleConnectWallet} rounded={"3xl"} colorScheme={"blue"}>
+          {walletAddress
+            ? walletAddress.slice(0, 8) +
             "..." +
-            walletaddress.slice(walletaddress.length - 4, walletaddress.length)
+            walletAddress.slice(walletAddress.length - 4, walletAddress.length)
             : "Connect"}
         </Button>
       </HStack >

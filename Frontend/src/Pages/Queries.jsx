@@ -3,11 +3,12 @@ import Navbar from "../components/Navbar"
 import QueryCard from "../components/QueryCard"
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Query = () => {
+
     const [questions, setQuestions] = useState([]);
-    const navigate = useNavigate()
+
     useEffect(() => {
         const getQueries = async () => {
             const response = await axios.get("http://localhost:4000/question/get-question");
@@ -19,7 +20,7 @@ const Query = () => {
 
     return (
         <Box bg="background" height={"100%"}>
-            <Navbar queryBar={true}/>
+            <Navbar queryBar={true} />
             <VStack padding={"6"}>
                 <Heading color={"white"} marginBottom={"10"}>Top Queries</Heading>
 
