@@ -3,14 +3,14 @@ const router = express.Router()
 const Request = require('../models/request')
 
 router.post('/add-requests', async (req, res) => {
-    const { address, nftType } = req.body.address
+    const { account, nftType} = req.body
 
-    const existingRequest = await Request.findOne({ account: address })
+    const existingRequest = await Request.findOne({ account: account })
     if (existingRequest) {
         return res.status(400).json({ msg: "Request already exists" })
     }
     const request = new Request({
-        account: address,
+        account: account,
         nftType: nftType,
         isApproved: false
     })

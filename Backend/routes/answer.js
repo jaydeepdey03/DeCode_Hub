@@ -2,6 +2,17 @@ const Answer = require('../models/answer')
 const express = require('express')
 const router = express.Router()
 
+router.get('/answers/:id', async (req, res) => {
+  try {
+    const answers = await Answer.find({ questionId: req.params.id })
+    // .populate('userId', 'account')
+    res.json(answers).status(200)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ message: 'Server Error' })
+  }
+})
+
 router.post('/add-answer', async (req, res) => {
   console.log("called")
   const { questionId, userId, content, upvotes, downvotes } = req.body
@@ -22,15 +33,20 @@ router.post('/add-answer', async (req, res) => {
 })
 
 router.post('/upvote/:id', async (req, res) => {
+
+  console.log("dasds")
   try {
     const answerId = req.params.id;
     const userId = req.body.userId; // assuming you're sending the userId in the request body
     const answer = await Answer.findById(answerId);
 
     // check if the user has already upvoted the answer
-    const userUpvoted = answer.upvotes.some(upvote => upvote.upvote.toString() === userId);
-    if (userUpvoted) {
-      return res.status(400).json({ msg: 'User already upvoted this answer' });
+    const userUpvotedIndex = answer.upvotes.findIndex(upvote => upvote.upvote.toString() === userId);
+    if (userUpvotedIndex !== -1) {
+      // delete the upvote record
+      answer.upvotes.splice(userUpvotedIndex, 1);
+      await answer.save();
+      return res.json(answer);
     }
 
     // remove the user's downvote if they had downvoted earlier
@@ -56,9 +72,12 @@ router.post('/downvote/:id', async (req, res) => {
     const answer = await Answer.findById(answerId);
 
     // check if the user has already downvoted the answer
-    const userDownvoted = answer.downvotes.some(downvote => downvote.downvote.toString() === userId);
-    if (userDownvoted) {
-      return res.status(400).json({ msg: 'User already downvoted this answer' });
+    const userDownvotedIndex = answer.downvotes.findIndex(downvote => downvote.downvote.toString() === userId);
+    if (userDownvotedIndex !== -1) {
+      // delete the upvote record
+      answer.downvotes.splice(userDownvotedIndex, 1);
+      await answer.save();
+      return res.json(answer);
     }
 
     // remove the user's upvote if they had upvoted earlier

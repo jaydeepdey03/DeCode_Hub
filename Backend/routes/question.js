@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 const Question = require('../models/question')
 const mongodb = require('mongodb');
-
 router.post('/add-question', async (req, res) => {
     const { userId, title, description, code, codeLanguage, image } = req.body
 

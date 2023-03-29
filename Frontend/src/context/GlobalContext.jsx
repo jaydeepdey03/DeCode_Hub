@@ -1,21 +1,17 @@
 import { createContext, useState } from "react";
 import { BeaconWallet } from "@taquito/beacon-wallet";
 import { TezosToolkit } from "@taquito/taquito";
-
-
+import axios from "axios";
 // export const contractAddress = "KT1NSMmpfLZUBY4naxi4CKQ4dhU692F59G3t"
 
-import axios from "axios";
-
 export const Context = createContext();
-
 const GlobalContextProvider = ({ children }) => {
 
 
-    const [walletaddress, setWalletaddress] = useState(null);
+    const [walletAddress, setWalletAddress] = useState("");
 
     // initialization 
-    const [userId, setUserId] = useState(null);
+    const [userId, setUserId] = useState("");
 
     const preferredNetwork = "ghostnet";
     const options = {
@@ -78,9 +74,10 @@ const GlobalContextProvider = ({ children }) => {
         try {
 
             const user = await axios.post('http://localhost:4000/user/signup', {
-                address: walletaddress
+                address: walletAddress
             });
-            console.log(user);
+            console.log(user.data._id);
+            setUserId(user.data._id);
         }
         catch (error) {
             console.error(error);
@@ -90,13 +87,14 @@ const GlobalContextProvider = ({ children }) => {
 
     return (
         <Context.Provider value={{
-            walletaddress,
-            setWalletaddress,
+            walletAddress,
+            setWalletAddress,
             connectWallet,
             disconnectWallet,
             getActiveAccount,
             checkIfWalletConnected,
             Tezos,
+            userId,
             getUserId
         }}>
             {children}

@@ -7,49 +7,49 @@ import useGlobalContext from "../hooks/useGlobalContext"
 
 const Navbar = ({ queryBar, isAdmin }) => {
 
-  const { walletaddress, setWalletaddress, connectWallet, getActiveAccount, disconnectWallet, getUserId } = useGlobalContext();
+  const { walletAddress, setWalletAddress, connectWallet, getActiveAccount, disconnectWallet, getUserId } = useGlobalContext();
 
   const handleConnectWallet = async () => {
     const { wallet } = await connectWallet();
-    setWalletaddress(wallet);
+    setWalletAddress(wallet);
   };
   const handleDisconnectWallet = async () => {
     const { wallet } = await disconnectWallet();
-    setWalletaddress(wallet);
+    setWalletAddress(wallet);
   };
 
   useEffect(() => {
     const func = async () => {
       const account = await getActiveAccount();
       if (account) {
-        setWalletaddress(account.address);
+        setWalletAddress(account.address);
       }
     };
     func();
-  }, [walletaddress, setWalletaddress, getActiveAccount]);
+  }, [walletAddress, setWalletAddress, getActiveAccount]);
 
   // backend
 
   useEffect(() => {
-    if(walletaddress)
-    getUserId();
-  }, [walletaddress])
+    if (walletAddress)
+      getUserId();
+  }, [walletAddress, getUserId])
 
 
   return (
-    <HStack padding={"7"} display={"flex"} justifyContent={"space-between"} position="fixed" width="100%">
+    <HStack padding={"7"} display={"flex"} justifyContent={"space-between"}>
       <Text as="b" fontSize={"2xl"} color={"white"}>Logo</Text>
-      {queryBar ? <InputGroup width={"container.md"} >
-        <Input placeholder="Search Query" rounded={"3xl"} backgroundColor={"white"} />
+      {queryBar ? <InputGroup width={"container.md"}>
+        <Input placeholder="Search Query" rounded={"3xl"} />
         <InputRightElement children={<SearchIcon marginRight={"3"} />} />
-      </InputGroup> : isAdmin && <Text fontSize={"lg"} color={"white"} as="b">Admin Page</Text>}
+      </InputGroup> : isAdmin && <Text fontSize={"lg"} as="b">Admin Page</Text>}
       <HStack>
         {/* <ToggleTheme /> */}
-        <Button width={"44"} onClick={walletaddress ? handleDisconnectWallet : handleConnectWallet} rounded={"3xl"} colorScheme={"blue"}>
-          {walletaddress
-            ? walletaddress.slice(0, 8) +
+        <Button width={"44"} onClick={walletAddress ? handleDisconnectWallet : handleConnectWallet} rounded={"3xl"} colorScheme={"blue"}>
+          {walletAddress
+            ? walletAddress.slice(0, 8) +
             "..." +
-            walletaddress.slice(-4)
+            walletAddress.slice(walletAddress.length - 4, walletAddress.length)
             : "Connect"}
         </Button>
       </HStack >
@@ -57,4 +57,4 @@ const Navbar = ({ queryBar, isAdmin }) => {
   )
 }
 
-export default Navbar
+export default Navbar;
