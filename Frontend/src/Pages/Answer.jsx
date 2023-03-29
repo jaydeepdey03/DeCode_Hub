@@ -36,11 +36,15 @@ const Answer = () => {
     // get answers for this question id
 
     return (
-        <Box bg="background" height={"100%"} padding={"2"}>
+        <Box bg="background" height={answers.length === 0? "100vh": "100%"} padding={"2"}>
             <Navbar queryBar={false} isAdmin={false} />
             <Center marginBottom={"7"}>
                 <VStack>
-                    <QuestionCard id={id} />
+                    <QuestionCard />
+                    {/* if no answers show a text 'no one answered with suitable margin'*/}
+                    {answers.length === 0 && <Text color={"white"}>No one has answered this question yet</Text>}
+                    
+                    
                     {/* map all the answers */}
                     {answers.map(answer => (
                         <AnswerCard

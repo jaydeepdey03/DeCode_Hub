@@ -76,7 +76,7 @@ function Profile() {
                             <CardBody display={"flex"} justifyContent={"space-between"}>
                                 <HStack>
                                     {/* <Avatar size={"sm"} /> */}
-                                    <Text fontSize={"sm"}>Congratulation! You have Earned NFTs for getting  <span style={{ fontWeight: '700' }}>#100Question</span>. Thanks for your contribution</Text>
+                                <Text fontSize={"sm"}>Congratulation! You have Earned NFTs for getting  <span style={{ fontWeight: '700' }}>100 Upvotes</span>. Thanks for your contribution</Text>
                                 </HStack>
                                 <Button colorScheme={"blue"}>Request NFT</Button>
                             </CardBody>
