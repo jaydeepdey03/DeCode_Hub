@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Card, CardBody, CardFooter, Center, Flex, Grid, GridItem, Heading, HStack, Image, SimpleGrid, Stack, Text, VStack } from '@chakra-ui/react';
+import { Avatar, Box, Button, Card, CardBody, CardHeader, CardFooter, Center, Flex, Heading, HStack, IconButton, Image, SimpleGrid, Stack, Text, VStack } from '@chakra-ui/react';
 import { bytes2Char, char2Bytes } from '@taquito/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import NFTCard from '../components/NFTCard';
 import useGlobalContext from '../hooks/useGlobalContext';
+import { BiLike, BiChat, BiShare } from 'react-icons/bi'
+import { BsThreeDotsVertical } from 'react-icons/bs'
+import ProfileQuestion from '../components/ProfileQuestion';
 // import { contractAddress } from '../utils/Tezos';
 
 function Profile() {
@@ -85,13 +88,25 @@ function Profile() {
                         </VStack>
                     </Box>
                     <Heading color={"white"} margin={"10"} fontSize={"3xl"} as="b">Your NFTs</Heading>
-                    <SimpleGrid columns={[1, 2, 3]} gap={6} width={"5xl"} paddingBottom="10">
+                    <SimpleGrid flexWrap={"wrap"} columns={[1, 2, 3]} gap={6} width={"5xl"} paddingBottom="10">
                         <NFTCard />
                         <NFTCard />
                         <NFTCard />
                         <NFTCard />
                         <NFTCard />
                     </SimpleGrid>
+                    <Heading color={"white"} margin={"10"} fontSize={"3xl"} as="b">Your Questions</Heading>
+                    <Box padding="5" >
+                        <Center padding="5">
+                            <SimpleGrid columns={[1, 2, 3]} gap={6} width={"5xl"}>
+                                <ProfileQuestion />
+                                <ProfileQuestion />
+                                <ProfileQuestion />
+                                <ProfileQuestion />
+                                <ProfileQuestion />
+                            </SimpleGrid>
+                        </Center>
+                    </Box>
                 </Flex>
             </Box>
         </>

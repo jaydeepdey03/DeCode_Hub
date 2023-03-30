@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom"
 
 const Navbar = ({ queryBar, isAdmin }) => {
 
-  const { walletAddress, setWalletAddress, connectWallet, getActiveAccount, disconnectWallet, getUserId } = useGlobalContext();
+  const { walletAddress, setWalletAddress, connectWallet, getActiveAccount, disconnectWallet, getUserId, checkIfWalletConnected } = useGlobalContext();
 
   const handleConnectWallet = async () => {
     const { wallet } = await connectWallet();
@@ -29,6 +29,15 @@ const Navbar = ({ queryBar, isAdmin }) => {
     };
     func();
   }, [walletAddress, setWalletAddress, getActiveAccount]);
+
+
+  useEffect(() => {
+    const res = checkIfWalletConnected()
+    // if success is false then set wallet address to null
+    if (!res.success) {
+      setWalletAddress(null);
+    }
+  }, [])
 
   // backend
 
@@ -62,18 +71,24 @@ const Navbar = ({ queryBar, isAdmin }) => {
 
         {walletAddress && <Button colorScheme={"teal"} color={"white"} onClick={() => navigate('/askQuestion')} rounded={"3xl"}>Ask Question</Button>}
 
-        {!walletAddress ? <Button leftIcon={<Temple height={"27"} />} backgroundColor={"#FE8542"} color={"white"} onClick={handleConnectWallet} rounded={"3xl"}>
-          Connect Wallet
-        </Button> :
-          <Menu>
-            <MenuButton as={Button} rounded={"3xl"} colorScheme={"blue"}>
-              {walletAddress.slice(0, 8) + "..." + walletAddress.slice(-4)}
-            </MenuButton>
-            <MenuList>
-              <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
-              <MenuItem onClick={handleDisconnectWallet}>Disconnect</MenuItem>
-            </MenuList>
-          </Menu>}
+        {!walletAddress ?
+          <>
+            <Button leftIcon={<Temple height={"27"} />} backgroundColor={"#FE8542"} color={"white"} onClick={handleConnectWallet} rounded={"3xl"}>
+              Connect Wallet
+            </Button>
+          </> :
+          <>
+            <Menu>
+              <MenuButton as={Button} rounded={"3xl"} colorScheme={"blue"}>
+                {walletAddress.slice(0, 8) + "..." + walletAddress.slice(-4)}
+              </MenuButton>
+              <MenuList>
+                <MenuItem onClick={() => navigate('/query')}>Query Page</MenuItem>
+                <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
+                <MenuItem onClick={handleDisconnectWallet}>Disconnect</MenuItem>
+              </MenuList>
+            </Menu>
+          </>}
       </HStack >
     </HStack >
   )
