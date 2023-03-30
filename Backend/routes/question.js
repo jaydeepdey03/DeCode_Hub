@@ -4,7 +4,7 @@ const Question = require('../models/question')
 const mongodb = require('mongodb');
 router.post('/add-question', async (req, res) => {
     const { userId, title, description, code, codeLanguage, image } = req.body
-
+    console.log(userId)
     const question = new Question({
         userId: new mongodb.ObjectId(userId),
         title: title,
@@ -37,7 +37,7 @@ router.get('/get-question', async (req, res) => {
 router.get('/get-question/:id', async (req, res) => {
     try {
         console.log(req.params.id);
-        const question = await Question.find({ "_id": new mongodb.ObjectId(req.params.id) });
+        const question = await Question.find({ "_id": new mongodb.ObjectId(req.params.id) }).populate('userId', 'account');
         return res.json(question).status(200);
     } catch (err) {
         console.error(err);

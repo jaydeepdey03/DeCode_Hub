@@ -40,7 +40,15 @@ const Answer = () => {
             <Navbar queryBar={false} isAdmin={false} />
             <Center marginBottom={"7"}>
                 <VStack>
-                    <QuestionCard />
+                    <QuestionCard key={question._id}
+                        id={question._id}
+                        user={question.userId.account}
+                        title={question.title}
+                        description={question.description}
+                        code={question.code}
+                        codeLangauge={question.codeLangauge}
+                        image={question.image}
+                    />
                     {/* if no answers show a text 'no one answered with suitable margin'*/}
                     {answers.length === 0 && <Text color={"white"}>No one has answered this question yet</Text>}
                     

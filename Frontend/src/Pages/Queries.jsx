@@ -19,7 +19,7 @@ const Query = () => {
     }, []);
 
     return (
-        <Box bg="background" height={questions.length === 0? "100vh":"100%"}>
+        <Box bg="background" minHeight={"100vh"}>
             <Navbar queryBar={true} />
             <VStack padding={"6"}>
                 <Heading color={"white"} marginBottom={"10"}>Top Queries</Heading>

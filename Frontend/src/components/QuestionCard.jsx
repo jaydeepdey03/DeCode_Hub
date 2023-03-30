@@ -12,16 +12,18 @@ import {
 } from '@chakra-ui/react'
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useState } from "react";
+import axios from "axios";
+import useGlobalContext from "../hooks/useGlobalContext";
 
 
-const QuesionCard = ({ id }) => {
+const QuesionCard = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
-
+    const {userId}=useGlobalContext();
     const [answer, setAnswer] = useState({
-        title: '',
+        // title: '',
         code: '',
         language: '',
-        desc: ''
+        description: ''
     })
 
     const handleAnswer = (e) => {
@@ -29,10 +31,32 @@ const QuesionCard = ({ id }) => {
         setAnswer({ ...answer, [name]: value })
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async() => {
         // submit and close the modal
         onClose()
         console.log(answer)
+        try 
+        {
+            const URL="http://localhost:4000/answer"
+            console.log(answer.description)
+            console.log(answer.code)
+            console.log(answer.language)
+            const res=await axios.post(`${URL}/add-answer`,{
+                questionId:props.id,
+                userId:userId,
+                code:answer.code,
+                codeLanguage:answer.language,
+                content:answer.description 
+            })
+            console.log(res)
+            res = res.data;
+            setAnswer(...answer,res.data);
+        } 
+        catch (error) 
+        {
+            console.log(error)
+        }
+
     }
 
     return (
@@ -42,12 +66,12 @@ const QuesionCard = ({ id }) => {
                     {/* Top Header */}
                     <HStack justifyContent={"space-between"} marginBottom={"3"}>
                         <Box display={"flex"} alignItems={"start"} justifyContent={"start"} flexDirection="column">
-                            <Text as="b" justifyContent={"start"} fontSize={"lg"}>Running Pylint Analysis on Remote Repos</Text>
+                            <Text as="b" justifyContent={"start"} fontSize={"lg"}>{props.title}</Text>
                             <Flex width={"full"} justifyContent={"start"}>
                                 <Text>Asked by: </Text>
-                                <Text>tz1gXMk...tuJtASRKwddY</Text>
+                                <Text>{props.user}</Text>
                             </Flex>
-                            <Text>{id}</Text>
+                            <Text></Text>
                         </Box>
                         <Button onClick={onOpen}>Answer Now</Button>
                     </HStack>
@@ -58,8 +82,8 @@ const QuesionCard = ({ id }) => {
                             {/* <ModalCloseButton /> */}
                             <ModalBody>
                                 <FormControl>
-                                    <FormLabel>Title</FormLabel>
-                                    <Input name="title" onChange={handleAnswer} placeholder="Answer title" />
+                                    {/* <FormLabel>Title</FormLabel>
+                                    <Input name="title" onChange={handleAnswer} placeholder="Answer title" /> */}
                                     <Menu>
                                         <HStack alignItems={"center"} justifyContent={"space-between"} padding={"2"}>
                                             <FormLabel>Code</FormLabel>
@@ -79,7 +103,7 @@ const QuesionCard = ({ id }) => {
                                 </FormControl>
                                 <FormControl mt={4}>
                                     <FormLabel>Description</FormLabel>
-                                    <Textarea name="description" height={"32"} placeholder="Description" />
+                                    <Textarea onChange={handleAnswer} name="description" height={"32"} placeholder="Description" />
                                 </FormControl>
                             </ModalBody>
 

@@ -15,43 +15,43 @@ const AnswerCard = (props) => {
     const [countLike, setCountLike] = useState(props.upvotes.length)
     const [countDislike, setcountDislike] = useState(props.downvotes.length)
 
-    const { userId } = useGlobalContext();
-    console.log("userId-------", userId)
+    const {userId} = useGlobalContext();
+    console.log("userId-------",  userId)
     const codeString = props.content
 
     useEffect(() => {
         console.log(props.upvotes)
-        // eslint-disable-next-line array-callback-return
-        props.upvotes.map((val, ind) => {
-            if (val.upvote === userId) {
+        props.upvotes.map((val,ind)=>{
+            if(val.upvote===userId)
+            {
                 setToggleLike(true)
                 setToggleDisLike(false)
             }
         })
 
         console.log(props.downvotes)
-        // eslint-disable-next-line array-callback-return
-        props.downvotes.map((val, ind) => {
-            if (val.downvote === userId
-            ) {
+        props.downvotes.map((val,ind)=>{
+            if(val.downvote===userId
+                )
+            {
                 setToggleDisLike(true)
                 setToggleLike(false)
             }
         })
+        
+    }, [userId])
 
-    }, [userId, props.upvotes, props.downvotes])
-
-    const upClick = async () => {
+    const upClick=async()=>{
         try {
-
-            await axios.post(`http://localhost:4000/answer/upvote/${props.id}`, {
-                userId: userId
-            })
-            const totalupClicks = await axios.get(`http://localhost:4000/answer/upvotes/${props.id}`)
-            setCountLike(totalupClicks.data.length)
-
-            const totaldownClicks = await axios.get(`http://localhost:4000/answer/downvotes/${props.id}`)
-            setcountDislike(totaldownClicks.data.length)
+        
+        await axios.post(`http://localhost:4000/answer/upvote/${props.id}`,{
+            userId: userId
+        })
+        const totalupClicks=await axios.get(`http://localhost:4000/answer/upvotes/${props.id}`)
+        setCountLike(totalupClicks.data.length)
+        
+        const totaldownClicks=await axios.get(`http://localhost:4000/answer/downvotes/${props.id}`)
+        setcountDislike(totaldownClicks.data.length)
 
         } catch (error) {
             console.log(error)
@@ -59,18 +59,18 @@ const AnswerCard = (props) => {
     }
 
 
-    const downClick = async () => {
+    const downClick=async()=>{
         try {
-
-            await axios.post(`http://localhost:4000/answer/downvote/${props.id}`, {
-                userId: userId
-            })
-            const totalupClicks = await axios.get(`http://localhost:4000/answer/upvotes/${props.id}`)
-            setCountLike(totalupClicks.data.length)
-
-            const totaldownClicks = await axios.get(`http://localhost:4000/answer/downvotes/${props.id}`)
-            setcountDislike(totaldownClicks.data.length)
-
+        
+        await axios.post(`http://localhost:4000/answer/downvote/${props.id}`,{
+            userId:userId
+        })
+        const totalupClicks=await axios.get(`http://localhost:4000/answer/upvotes/${props.id}`)
+        setCountLike(totalupClicks.data.length)
+        
+        const totaldownClicks=await axios.get(`http://localhost:4000/answer/downvotes/${props.id}`)
+        setcountDislike(totaldownClicks.data.length)
+        
         } catch (error) {
             console.log(error)
         }
@@ -80,9 +80,10 @@ const AnswerCard = (props) => {
         <Card width={"3xl"} padding={"5"}>
             <CardBody>
                 {/* Problem desc*/}
-                <Text>
+                <Text marginTop={"4"}>{props.content}</Text>
+                {/* <Text>
                     Correct. Use one of the alternative implementations available:
-                </Text>
+                </Text> */}
                 {/* Code box */}
                 <Center marginTop={"4"} margin={"2"} borderRadius={"16px"} alignItems={"center"} justifyContent={"center"} wrapLongLines={true}>
                     <SyntaxHighlighter language="c" style={vscDarkPlus}>
@@ -90,25 +91,25 @@ const AnswerCard = (props) => {
                     </SyntaxHighlighter>
                 </Center>
                 {/* Furthur Text */}
-                <Text marginTop={"4"}>Is this possible as illustrated above, or in the .pylintrc configuration file for example?</Text>
+                
                 <Flex justifyContent={"space-between"} marginTop={"7"}>
                     <HStack>
                         <Avatar size={"sm"} />
                         <Box display={"flex"} flexDirection={"column"}>
-                            <Text fontSize={"smaller"}>Fidal Mathew</Text>
+                            <Text fontSize={"smaller"}>{props.user.account}</Text>
                             <Text fontSize={"smaller"}></Text>
                         </Box>
                     </HStack>
                     <HStack alignItems={"center"}>
-                        {!toggleLike ? <FiThumbsUp onClick={() => {
+                        {!toggleLike ? <FiThumbsUp onClick={()=>{
 
                             upClick()
                             setToggleLike(true)
                             setToggleDisLike(false)
-                        }
-                        } /> : <HiThumbUp
+                        } 
+                        } /> : <HiThumbUp 
                             onClick={
-                                () => {
+                                ()=>{
                                     upClick()
                                     setToggleLike(false)
                                     setToggleDisLike(false)
@@ -116,19 +117,19 @@ const AnswerCard = (props) => {
                             }
                         />}
                         <Text>{countLike}</Text>
-                        {!toggleDisLike ? <FiThumbsDown
+                        {!toggleDisLike ? <FiThumbsDown 
+                        onClick={
+                            ()=>{
+                                downClick()
+                                setToggleDisLike(true)
+                                setToggleLike(false)
+                            }
+                        } /> : <HiThumbDown 
                             onClick={
-                                () => {
-                                    downClick()
-                                    setToggleDisLike(true)
-                                    setToggleLike(false)
-                                }
-                            } /> : <HiThumbDown
-                            onClick={
-                                () => {
-                                    downClick()
-                                    setToggleDisLike(false)
-                                    setToggleLike(false)
+                                ()=>{
+                                downClick()
+                                setToggleDisLike(false)
+                                setToggleLike(false)
                                 }
                             }
                         />}

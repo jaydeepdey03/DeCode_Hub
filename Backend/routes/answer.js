@@ -4,8 +4,7 @@ const router = express.Router()
 
 router.get('/answers/:id', async (req, res) => {
   try {
-    const answers = await Answer.find({ questionId: req.params.id })
-    // .populate('userId', 'account')
+    const answers = await Answer.find({ questionId: req.params.id }).populate('userId', 'account')
     res.json(answers).status(200)
   } catch (err) {
     console.error(err)
@@ -15,11 +14,13 @@ router.get('/answers/:id', async (req, res) => {
 
 router.post('/add-answer', async (req, res) => {
   console.log("called")
-  const { questionId, userId, content, upvotes, downvotes } = req.body
+  const { questionId, userId, content, upvotes, downvotes,code,codeLanguage } = req.body
   const answer = new Answer({
     questionId: questionId,
     userId: userId,
     content: content,
+    code:code,
+    codeLanguage:codeLanguage,
     upvotes: upvotes,
     downvotes: downvotes
   })
