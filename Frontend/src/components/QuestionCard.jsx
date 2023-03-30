@@ -11,9 +11,16 @@ import {
     ModalCloseButton
 } from '@chakra-ui/react'
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import useGlobalContext from "../hooks/useGlobalContext";
+
+
+
+// new content
+import { useParams } from "react-router-dom"
+import AnswerCard from "../components/AnswerCard"
+
 
 
 const QuesionCard = (props) => {
@@ -25,6 +32,46 @@ const QuesionCard = (props) => {
         language: '',
         description: ''
     })
+
+
+
+
+    // new content
+
+    
+    const [question, setQuestion] = useState({})
+    const [answers, setAnswers] = useState([])
+    const { id } = useParams()
+
+    // const { userId } = useGlobalContext()
+
+    const URL = "http://localhost:4000"
+
+    useEffect(() => {
+        const getQuestions = async () => {
+            const ques = await axios.get(`${URL}/question/get-question/${id}`)
+            setQuestion(ques.data[0])
+            console.log(ques.data[0])
+        }
+        const getAnswers = async () => {
+            const answers = await axios.get(`${URL}/answer/answers/${id}`)
+            console.log(answers.data)
+            setAnswers(answers.data)
+        }
+        getQuestions();
+        getAnswers();
+    }, [id, userId])
+
+    // c.................
+
+
+
+
+
+
+
+
+
 
     const handleAnswer = (e) => {
         const { name, value } = e.target
@@ -49,15 +96,15 @@ const QuesionCard = (props) => {
                 content:answer.description 
             })
             console.log(res)
-            res = res.data;
-            setAnswer(...answer,res.data);
+            // res = res.data;
+            setAnswers(...answers,res.data);
         } 
         catch (error) 
         {
             console.log(error)
         }
 
-    }
+    }  
 
     return (
         <>
@@ -135,6 +182,16 @@ const QuesionCard = (props) => {
 
                 </CardBody>
             </Card>
+             {answers.map(answer => (
+                        <AnswerCard
+                            key={answer._id}
+                            id={answer._id}
+                            user={answer.userId}
+                            content={answer.content}
+                            upvotes={answer.upvotes}
+                            downvotes={answer.downvotes}
+                        />
+                    ))}
         </>
     )
 }

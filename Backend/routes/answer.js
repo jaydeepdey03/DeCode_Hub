@@ -4,7 +4,7 @@ const router = express.Router()
 
 router.get('/answers/:id', async (req, res) => {
   try {
-    const answers = await Answer.find({ questionId: req.params.id }).populate('userId', 'account')
+    const answers = await Answer.find({ questionId: req.params.id })
     res.json(answers).status(200)
   } catch (err) {
     console.error(err)

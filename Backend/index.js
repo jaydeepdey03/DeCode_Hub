@@ -20,8 +20,10 @@ app.use("/request", requestRoutes)
 mongoose.
   connect(process.env.MONGO_URL)
   .then(result => {
-    console.log("running boiss")
-    app.listen(4000)
+    console.log("mongodb connected")
+    app.listen(4000, ()=> {
+      console.log("Server connected")
+    })
   })
   .catch(err => {
     console.log(err)
