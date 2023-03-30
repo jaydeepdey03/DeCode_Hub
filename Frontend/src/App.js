@@ -29,11 +29,11 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={walletAddress ? <Profile /> : <Home />} />
-        <Route path="/query" element={walletAddress ? <Query /> : <Home />} />
-        <Route path="/answer/:id" element={walletAddress ? <Answer /> : <Home />} />
-        <Route path="/admin" element={walletAddress ? <Admin /> : <Home />} />
-        <Route path="/askQuestion" element={walletAddress ? <AskQuestion />:<Home/>} />
+        <Route path="/profile" element={walletAddress ? (isAdmin ? <Admin /> : <Profile />) : <Home />} />
+        <Route path="/query" element={walletAddress ? (isAdmin ? <Admin /> : <Query />) : <Home />} />
+        <Route path="/answer/:id" element={walletAddress ? (isAdmin ? <Admin /> : <Answer />) : <Home />} />
+        <Route path="/admin" element={walletAddress ? (isAdmin ? <Admin /> : <Home />) : <Home />} />
+        <Route path="/askQuestion" element={walletAddress ? (isAdmin ? <Admin /> : <AskQuestion />) : <Home />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </>

@@ -1,12 +1,14 @@
 import { Avatar, Button, Card, CardBody, HStack, Text, VStack } from "@chakra-ui/react"
-import { bytes2Char, char2Bytes } from '@taquito/utils';
-import { TezosToolkit, MichelsonMap } from '@taquito/taquito';
+import { char2Bytes } from '@taquito/utils';
+import { MichelsonMap } from '@taquito/taquito';
 
 import axios from "axios";
 import { useEffect, useState } from "react";
 import useGlobalContext from "../hooks/useGlobalContext"
 
-const MintRequest = () => {
+const MintRequest = (props) => {
+
+    console.log(props)
 
     const { Tezos } = useGlobalContext();
 
@@ -14,7 +16,7 @@ const MintRequest = () => {
     const [nfts, setNfts] = useState([])
     const contractAddress = "KT1NSMmpfLZUBY4naxi4CKQ4dhU692F59G3t"
     const url = "ipfs://QmV2howLdzPNAtiinAQhiAR4GaGKtWvNPd3weSVjhKWeVC"
-    const address = "tz1Ph1TwjnaskzUnnhwmntStrqmPy3NJPLGY"
+    // const address = "tz1Ph1TwjnaskzUnnhwmntStrqmPy3NJPLGY"
 
     // get all nfts and fetch the token id for the next mint
 
@@ -42,15 +44,26 @@ const MintRequest = () => {
         return contract;
     };
 
-    const mintNFT = async (address) => {
+    const mintNFT = async () => {
         // await disconnectWallet();
         // await connectWallet();
-        console.log(address, url, tokenId);
+
+        console.log(props.address, url, tokenId);
         const amount = 1;
-        const contract = await getContract();
-        const urlC = char2Bytes(url);
-        const op = await contract.methods.mint(address, amount, MichelsonMap.fromLiteral({ '': urlC }), tokenId).send();
-        return await op.confirmation(3);
+
+        try {
+            const contract = await getContract();
+            const urlC = char2Bytes(url);
+            const op = await contract.methods.mint(props.address, amount, MichelsonMap.fromLiteral({ '': urlC }), tokenId).send();
+            await op.confirmation(3);
+
+            const res = await axios.put(`http://localhost:4000/request/update-requests/${props.id}`, {
+                isApproved: true
+            })
+            console.log(res.data)
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -60,10 +73,10 @@ const MintRequest = () => {
                     <CardBody display={"flex"} justifyContent={"space-between"}>
                         <HStack>
                             <Avatar size={"sm"} />
-                            <Text fontSize={"sm"}>tz1gXMkr...JtASRKwddY</Text>
-                            <Text>requested for <span style={{ fontWeight: '700' }}>#100Question</span> Achievement NFT</Text>
+                            <Text fontSize={"sm"}>{props.userId}</Text>
+                            <Text>requested for <span style={{ fontWeight: '700' }}>#{props.nftType}</span> NFT</Text>
                         </HStack>
-                        <Button onClick={() => mintNFT(address)}>Mint NFT</Button>
+                        <Button onClick={() => mintNFT()}>Mint NFT</Button>
                     </CardBody>
                 </Card>
             </VStack>

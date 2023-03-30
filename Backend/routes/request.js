@@ -3,14 +3,33 @@ const router = express.Router()
 const Request = require('../models/request')
 
 router.post('/add-requests', async (req, res) => {
-    const { account, nftType} = req.body
+    const { address, nftType } = req.body
 
-    const existingRequest = await Request.findOne({ account: account })
-    if (existingRequest) {
-        return res.status(400).json({ msg: "Request already exists" })
+    try {
+
+        let existingRequest = await Request.findOne({ address: address, nftType: nftType, isApproved: false })
+        if (existingRequest) {
+            return res.status(200).json({ message: "Request already exists" })
+        }
+
     }
+    catch (e) {
+        console.log(e)
+    }
+
+    // check if request already exists and is approved
+    try {
+        existingRequest = await Request.findOne({ address: address, nftType: nftType, isApproved: true })
+        if (existingRequest) {
+            return res.status(500).json({ message: "Not authorized" })
+        }
+    }
+    catch (e) {
+        console.log(e)
+    }
+
     const request = new Request({
-        account: account,
+        address: address,
         nftType: nftType,
         isApproved: false
     })

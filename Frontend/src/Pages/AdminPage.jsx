@@ -11,18 +11,17 @@ const Admin = () => {
 
     useEffect(() => {
         const getRequests = async () => {
-            const response = await axios.get("http://localhost:4000/requests/get-requests");
+            const response = await axios.get("http://localhost:4000/request/get-requests");
             setRequests(response.data);
-            console.log(response.data)
+            console.log("adsd", response.data)
         };
         getRequests();
     }, []);
     return (
-        <Box bg={"background"} height={"100%"}>
+        <Box bg={"background"} minH={"100vh"}>
             <Navbar queryBar={false} isAdmin={true} />
-            <MintRequest />
             {
-                requests.map((req, idx) => (<MintRequest key={idx} address={req.address} nftType={req.nftType} />))
+                requests.map((req, idx) => (<MintRequest key={idx} id={req._id} address={req.address} nftType={req.nftType} />))
             }
         </Box>
     )

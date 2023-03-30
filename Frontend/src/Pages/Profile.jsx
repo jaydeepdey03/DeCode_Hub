@@ -14,55 +14,92 @@ function Profile() {
     // get NFTs by owner
 
     const [userNfts, setUserNfts] = useState([])
+    const [requests, setRequests] = useState([])
 
-
-    const { walletAddress } = useGlobalContext();
     const navigate = useNavigate()
 
-
-    
-    const getNFTsByOwner = async () => {
-        const response = await axios.get(
-            `https://api.ghostnet.tzkt.io/v1/contracts/${contractAddress}/bigmaps/ledger/keys`
-        );
-        const data = response.data;
-        console.log(data);
-
-        const arr = data.filter((val,ind)=>{
-            if(val.key.address==walletAddress)
-            return val
-        })
-        setUserNfts(arr)
-    };
-    const [upvotes,setUpvotes]=useState(0)
-    const { userId } = useGlobalContext()
-
-    const getUpvotes = async () => {
-        try {
-            const URL = "http://localhost:4000/user"
-            console.log(userId, 'jaydeep')
-            const response = await axios.post(`${URL}/all-upvotes`, {
-                user: userId
-            })
-            setUpvotes(response.data.totalUpvotes)
-        }
-        catch (error) {
-            console.log(error)
-        }
-    }
+    const [upvotes, setUpvotes] = useState(0)
+    const { userId, walletAddress } = useGlobalContext()
 
     useEffect(() => {
-        if(userId){
+
+        const getNFTsByOwner = async () => {
+            const response = await axios.get(
+                `https://api.ghostnet.tzkt.io/v1/contracts/${contractAddress}/bigmaps/ledger/keys`
+            );
+            const data = response.data;
+            console.log(data);
+
+            // eslint-disable-next-line array-callback-return
+            const arr = data.filter((val, ind) => {
+                if (val.key.address === walletAddress)
+                    return val
+            })
+            setUserNfts(arr)
+        };
+
+
+
+        const getUpvotes = async () => {
+            try {
+                const URL = "http://localhost:4000/user"
+                console.log(userId, 'jaydeep')
+                const response = await axios.post(`${URL}/all-upvotes`, {
+                    user: userId
+                })
+                setUpvotes(response.data.totalUpvotes)
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+
+        if (userId) {
             getNFTsByOwner()
             getUpvotes()
         }
-    }, [userId])
+    }, [userId, walletAddress])
 
     useEffect(() => {
         if (!walletAddress)
             navigate('/', { replace: true });
     }, [walletAddress, navigate])
 
+
+    useEffect(() => {
+
+        const checkRequest = async () => {
+            if (walletAddress && upvotes >= 5) {
+                // request NFT
+                const res = await axios.post("http://localhost:4000/request/add-requests", {
+                    address: walletAddress,
+                    nftType: 1,
+                    isApproved: false
+                })
+                const ans = res.data;
+                console.log("dasdasd", ans)
+
+                // if(ans.message && ans.message==="Request already exists"){
+                //     console.log("Request already exists")
+                // }
+                if (ans.walletAddress) {
+                    setRequests([...requests, ans.data]);
+                }
+            }
+        }
+        checkRequest();
+    }, [upvotes, walletAddress])
+
+    useEffect(() => {
+        const getRequests = async () => {
+
+            const res = await axios.get("http://localhost:4000/request/get-requests");
+            const ans = res.data;
+            setRequests(ans)
+        }
+        getRequests();
+
+    }, [])
 
     return (
         <>
@@ -75,7 +112,7 @@ function Profile() {
                             <VStack justifyContent={"center"}>
                                 <Avatar size={"2xl"} margin="6" src="https://api.dicebear.com/6.x/identicon/svg?seed=Fluffy" />
                                 <Stack mt='6' spacing='3' marginTop={"16"} >
-                                    <Heading margin="auto" size='md'>tz1gXMk....tASRKwddY</Heading>
+                                    <Heading margin="auto" size='md'> {walletAddress.slice(0, 8) + "..." + walletAddress.slice(-4)} </Heading>
                                     <Flex justifyContent={"space-between"}>
                                         <Card margin={"4"}>
                                             <CardBody padding="3" justifyContent={"center"} textAlign="center">
@@ -101,9 +138,10 @@ function Profile() {
                                 <CardBody display={"flex"} justifyContent={"space-between"}>
                                     <HStack>
                                         {/* <Avatar size={"sm"} /> */}
-                                        <Text fontSize={"sm"}>Congratulation! You have Earned NFTs for getting  <span style={{ fontWeight: '700' }}>100 Upvotes</span>. Thanks for your contribution</Text>
+                                        {requests.map((request) => {
+                                            return <Text fontSize={"sm"}>Congratulations! You have Earned <span style={{ fontWeight: '700' }}>#{request.nftType}</span> NFT. You'll be recieving the NFT soon</Text>
+                                        })}
                                     </HStack>
-                                    <Button colorScheme={"blue"}>Request NFT</Button>
                                 </CardBody>
                             </Card>
                         </VStack>
