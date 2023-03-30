@@ -80,10 +80,9 @@ const AnswerCard = (props) => {
         <Card width={"3xl"} padding={"5"}>
             <CardBody>
                 {/* Problem desc*/}
-                <Text marginTop={"4"}>{props.content}</Text>
-                {/* <Text>
+                <Text>
                     Correct. Use one of the alternative implementations available:
-                </Text> */}
+                </Text>
                 {/* Code box */}
                 <Center marginTop={"4"} margin={"2"} borderRadius={"16px"} alignItems={"center"} justifyContent={"center"} wrapLongLines={true}>
                     <SyntaxHighlighter language="c" style={vscDarkPlus}>
@@ -91,13 +90,13 @@ const AnswerCard = (props) => {
                     </SyntaxHighlighter>
                 </Center>
                 {/* Furthur Text */}
-                
+                <Text marginTop={"4"}>Is this possible as illustrated above, or in the .pylintrc configuration file for example?</Text>
                 <Flex justifyContent={"space-between"} marginTop={"7"}>
                     <HStack>
                         <Avatar size={"sm"} />
                         <Box display={"flex"} flexDirection={"column"}>
-                            <Text fontSize={"smaller"}>{props.user.account}</Text>
-                            <Text fontSize={"smaller"}></Text>
+                            <Text fontSize={"smaller"}>Fidal Mathew</Text>
+                            <Text fontSize={"smaller"}>{props.user}</Text>
                         </Box>
                     </HStack>
                     <HStack alignItems={"center"}>

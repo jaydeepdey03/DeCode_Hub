@@ -42,7 +42,7 @@ const Answer = () => {
                 <VStack>
                     <QuestionCard key={question._id}
                         id={question._id}
-                        user={question.userId.account}
+                        user={question.userId}
                         title={question.title}
                         description={question.description}
                         code={question.code}

@@ -19,25 +19,49 @@ function Profile() {
     const { walletAddress } = useGlobalContext();
     const navigate = useNavigate()
 
+
+    
+    const getNFTsByOwner = async () => {
+        const response = await axios.get(
+            `https://api.ghostnet.tzkt.io/v1/contracts/${contractAddress}/bigmaps/ledger/keys`
+        );
+        const data = response.data;
+        console.log(data);
+
+        const arr = data.filter((val,ind)=>{
+            if(val.key.address==walletAddress)
+            return val
+        })
+        setUserNfts(arr)
+    };
+    const [upvotes,setUpvotes]=useState(0)
+    const { userId } = useGlobalContext()
+
+    const getUpvotes = async () => {
+        try {
+            const URL = "http://localhost:4000/user"
+            console.log(userId, 'jaydeep')
+            const response = await axios.post(`${URL}/all-upvotes`, {
+                user: userId
+            })
+            setUpvotes(response.data.totalUpvotes)
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        if(userId){
+            getNFTsByOwner()
+            getUpvotes()
+        }
+    }, [userId])
+
     useEffect(() => {
         if (!walletAddress)
             navigate('/', { replace: true });
     }, [walletAddress, navigate])
-
-
-
-    const getNFTsByOwner = async () => {
-        const response = await axios.get(
-            `https://api.ghostnet.tzkt.io/v1/contracts/${contractAddress}/bigmaps/ledger/keys?address=${walletAddress}`
-        );
-        const data = response.data;
-        setUserNfts(data)
-        console.log(data);
-    };
-
-    useEffect(() => {
-        getNFTsByOwner()
-    }, [])
 
 
     return (
@@ -55,14 +79,14 @@ function Profile() {
                                     <Flex justifyContent={"space-between"}>
                                         <Card margin={"4"}>
                                             <CardBody padding="3" justifyContent={"center"} textAlign="center">
-                                                <Text>Upvote</Text>
-                                                <Text fontSize={"xl"} as="b" align="center">100</Text>
+                                                <Text>Upvotes</Text>
+                                                <Text fontSize={"xl"} as="b" align="center">{upvotes}</Text>
                                             </CardBody>
                                         </Card>
                                         <Card margin={"4"}>
                                             <CardBody padding="3" justifyContent={"center"} textAlign="center">
                                                 <Text>NFTs</Text>
-                                                <Text fontSize={"xl"} as="b" align="center">3</Text>
+                                                <Text fontSize={"xl"} as="b" align="center">{userNfts.length}</Text>
                                             </CardBody>
                                         </Card>
                                     </Flex>

@@ -8,7 +8,7 @@ const QueryCard = (props) => {
     const [count, setCount] = useState(5)
     const text = props.description
     return (
-        <Card size={"lg"} marginBottom={"7"}>
+        <Card marginBottom={"7"} width={"3xl"}>
             <CardBody>
                 <Flex flexDirection={"column"}>
                     <Heading size={"sm"} >{props.title}</Heading>
