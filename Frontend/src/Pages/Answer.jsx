@@ -19,6 +19,11 @@ const Answer = () => {
     const URL = "http://localhost:4000"
     const newAnswer=async(newans)=>{
         setAnswers([...answers,newans])
+        const getAnswers = async () => {
+            const answers = await axios.get(`${URL}/answer/answers/${id}`)
+            setAnswers(answers.data)
+        }
+        getAnswers();
     }
 
     useEffect(() => {
@@ -61,6 +66,7 @@ const Answer = () => {
                             code={question.code}
                             codeLanguage={question.codeLanguage}
                             image={question.image}
+                            length={answers.length}
                         />
                     }
                     {/* if no answers show a text 'no one answered with suitable margin'*/}

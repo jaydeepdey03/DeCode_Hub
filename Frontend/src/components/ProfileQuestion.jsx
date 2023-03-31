@@ -32,7 +32,7 @@ const ProfileQuestion = (props) => {
                         minW: '136px',
                     },
                 }}>
-                <Text>3 Answers</Text>
+                <Text>{`${props.question.ans}`} Answers</Text>
             </CardFooter>
         </Card>
     )

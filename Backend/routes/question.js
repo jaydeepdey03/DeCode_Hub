@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Question = require('../models/question')
 const mongodb = require('mongodb');
+const Answer=require('../models/answer')
 router.post('/add-question', async (req, res) => {
     const { userId, title, description, code, codeLanguage, image } = req.body
     console.log(userId)
@@ -25,11 +26,18 @@ router.post('/add-question', async (req, res) => {
 
 router.get('/get-question', async (req, res) => {
     try {
-        const ques = await Question.find().populate('userId', 'account')
-        return res.json(ques).status(200)
+        const questions = await Question.find().populate('userId', 'account')
+        let arr=[]
+        await Promise.all(questions.map(async (question,idx)=>{
+            const answers=await Answer.find({'questionId':question._id})
+            arr.push({...questions[idx]._doc, ans: answers.length})
+        }))
+        console.log(arr)
+        return res.json(arr).status(200);
     }
     catch (err) {
-        return res.json(err).status(500)
+        console.error(err);
+        return res.json(err).status(500);
     }
 
 })

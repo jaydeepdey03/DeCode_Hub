@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Card, CardBody, CardHeader, CardFooter, Center, Fl
 import { bytes2Char, char2Bytes } from '@taquito/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import NFTCard from '../components/NFTCard';
 import useGlobalContext from '../hooks/useGlobalContext';
@@ -186,7 +186,7 @@ function Profile() {
                         <Center padding="5">
                             <SimpleGrid columns={[1, 2, 3]} gap={6} width={"5xl"}>
                                 {questions.map((question, idx) => {
-                                    return <ProfileQuestion key={idx} question={question} />
+                                    return <Link to={`/answer/${question._id}`}><ProfileQuestion key={idx} question={question} /></Link>
                                 })}                                
                             </SimpleGrid>
                         </Center>

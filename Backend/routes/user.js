@@ -29,16 +29,10 @@ router.post("/all-upvotes", async (req, res) => {
   try {
     console.log(req.body.user)
     const answers = await Answer.find({"userId": req.body.user})
-    console.log(answers)
     let totalUpvotes = 0;
     answers.forEach((answer) => {
       totalUpvotes += answer.upvotes.length;
     });
-
-
-    console.log("paglachoda")
-
-
     res.status(200).json({ totalUpvotes });
   
   }
@@ -47,14 +41,20 @@ router.post("/all-upvotes", async (req, res) => {
   }
 });
 router.post('/get-question-by-user', async (req, res) => {
-    try {
-        const question = await Question.find({ "userId": req.body.userId })
-        console.log(question);
-        return res.json(question).status(200);
-    } catch (err) {
-        console.error(err);
-        return res.json(err).status(500);
-    }
+  try {
+      const questions = await Question.find({ "userId": req.body.userId })
+      let arr=[]
+      // console.log("Aryan here",questions);
+      await Promise.all(questions.map(async (question,idx)=>{
+        const answers=await Answer.find({'questionId':question._id})
+        arr.push({...questions[idx]._doc, ans: answers.length})
+      }))
+      console.log(arr)
+      return res.json(arr).status(200);
+  } catch (err) {
+      console.error(err);
+      return res.json(err).status(500);
+  }
 });
 
 module.exports = router;

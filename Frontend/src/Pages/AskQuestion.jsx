@@ -62,7 +62,7 @@ const AskQuestion = () => {
 
     return (
         <>
-            <Box bg={"background"} height={"100%"}>
+            <Box bg={"background"} minH={"100vh"}>
                 <Navbar />
                 <Center>
                     <VStack padding={"10"} color={"white"} maxWidth="sm">

@@ -138,6 +138,9 @@ const QuesionCard = (props) => {
 
                 </CardBody>
             </Card>
+            <Box justifyContent={"start"} width={"100%"}>
+            <Text fontSize={"2xl"} as="b" color={"gray.700"} >{props.length} {props.length === 1 ? 'Answer' : 'Answers'}</Text>
+        </Box>
             {answers.map(answer => (
                 <AnswerCard
                     key={answer._id}

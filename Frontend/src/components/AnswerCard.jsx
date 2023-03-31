@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Card, CardBody, Center, Code, Container, Flex, HStack, Text, VStack } from "@chakra-ui/react"
+import { Avatar, Box, Button, Card, CardBody, Center, Code, Container, Flex, HStack, Heading, Text, VStack } from "@chakra-ui/react"
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
@@ -20,7 +20,7 @@ const AnswerCard = (props) => {
 
     // console.table({...props, state: 'props'})
     console.log(props, 'props')
-   // props is coming undefined
+    // props is coming undefined
 
 
     useEffect(() => {
@@ -76,68 +76,72 @@ const AnswerCard = (props) => {
     }
 
     return (
-        <Card width={"3xl"} padding={"5"}>
-            <CardBody>
-                {/* Problem desc*/}
-                {/* <Text>
+        <>
+            <Card width={"3xl"} padding={"5"}>
+                <CardBody>
+                    {/* Problem desc*/}
+                    {/* <Text>
                     Correct. Use one of the alternative implementations available:
                 </Text> */}
-                {/* Code box */}
-                <Center marginTop={"4"} margin={"2"} borderRadius={"16px"} alignItems={"center"} justifyContent={"center"} wrapLongLines={true}>
-
-                    <SyntaxHighlighter language={props.codeLanguage} style={vscDarkPlus}>
-                        {props.code}
-                    </SyntaxHighlighter>
-
-                </Center>
-                {/* Furthur Text */}
-                <Text marginTop={"4"}>{props.content}</Text>
-                <Flex justifyContent={"space-between"} marginTop={"7"}>
-                    <HStack>
-                        <Avatar size={"sm"} />
-                        <Box display={"flex"} flexDirection={"column"}>
-                            {/* <Text fontSize={"smaller"}>Fidal Mathew</Text> */}
-                            <Text fontSize={"smaller"}>{props.user.slice(0,7) + '...' + props.user.slice(-4)}</Text>
+                    {/* Code box */}
+                    {/* Furthur Text */}
+                    <Text marginTop={"4"}>{props.content}</Text>
+                    <Center minW={"60%"} marginTop={"4"} margin={"2"} borderRadius={"16px"} alignItems={"center"} justifyContent={"center"} wrapLongLines={true}>
+                        <Box width={"90%"}>
+                            <SyntaxHighlighter language={props.codeLanguage} style={vscDarkPlus}>
+                                {props.code}
+                            </SyntaxHighlighter>
                         </Box>
-                    </HStack>
-                    <HStack alignItems={"center"}>
-                        {!toggleLike ? <FiThumbsUp onClick={() => {
 
-                            upClick()
-                            setToggleLike(true)
-                            setToggleDisLike(false)
-                        }
-                        } /> : <HiThumbUp
-                            onClick={
-                                () => {
-                                    upClick()
-                                    setToggleLike(false)
-                                    setToggleDisLike(false)
-                                }
+                    </Center>
+
+                    <Flex justifyContent={"space-between"} marginTop={"7"}>
+                        <HStack>
+                            <Avatar size={"sm"} />
+                            <Box display={"flex"} flexDirection={"column"}>
+                                {/* <Text fontSize={"smaller"}>Fidal Mathew</Text> */}
+                                <Text fontSize={"smaller"}>{props.user && (props.user.slice(0, 7) + '...' + props.user.slice(-4))}</Text>
+                            </Box>
+                        </HStack>
+                        <HStack alignItems={"center"}>
+                            {!toggleLike ? <FiThumbsUp onClick={() => {
+
+                                upClick()
+                                setToggleLike(true)
+                                setToggleDisLike(false)
                             }
-                        />}
-                        <Text>{countLike}</Text>
-                        {!toggleDisLike ? <FiThumbsDown
-                            onClick={
-                                () => {
-                                    downClick()
-                                    setToggleDisLike(true)
-                                    setToggleLike(false)
+                            } /> : <HiThumbUp
+                                onClick={
+                                    () => {
+                                        upClick()
+                                        setToggleLike(false)
+                                        setToggleDisLike(false)
+                                    }
                                 }
-                            } /> : <HiThumbDown
-                            onClick={
-                                () => {
-                                    downClick()
-                                    setToggleDisLike(false)
-                                    setToggleLike(false)
+                            />}
+                            <Text>{countLike}</Text>
+                            {!toggleDisLike ? <FiThumbsDown
+                                onClick={
+                                    () => {
+                                        downClick()
+                                        setToggleDisLike(true)
+                                        setToggleLike(false)
+                                    }
+                                } /> : <HiThumbDown
+                                onClick={
+                                    () => {
+                                        downClick()
+                                        setToggleDisLike(false)
+                                        setToggleLike(false)
+                                    }
                                 }
-                            }
-                        />}
-                        <Text>{countDislike}</Text>
-                    </HStack>
-                </Flex>
-            </CardBody>
-        </Card>
+                            />}
+                            <Text>{countDislike}</Text>
+                        </HStack>
+                    </Flex>
+                </CardBody>
+            </Card>
+        </>
     )
 }
 

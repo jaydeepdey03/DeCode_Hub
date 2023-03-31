@@ -32,6 +32,7 @@ const Query = () => {
                         <QueryCard
                             key={question._id}
                             title={question.title}
+                            total={question.ans}
                             description={question.description}
                             code={question.code}
                             codeLanguage={question.codeLanguage}
