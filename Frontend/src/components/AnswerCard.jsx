@@ -19,7 +19,7 @@ const AnswerCard = (props) => {
     const { userId } = useGlobalContext();
 
     // console.table({...props, state: 'props'})
-
+    console.log(props, 'props')
    // props is coming undefined
 
 
@@ -85,7 +85,7 @@ const AnswerCard = (props) => {
                 {/* Code box */}
                 <Center marginTop={"4"} margin={"2"} borderRadius={"16px"} alignItems={"center"} justifyContent={"center"} wrapLongLines={true}>
 
-                    <SyntaxHighlighter language={props.codeLanguage.toLowerCase()} style={vscDarkPlus}>
+                    <SyntaxHighlighter language={props.codeLanguage} style={vscDarkPlus}>
                         {props.code}
                     </SyntaxHighlighter>
 
@@ -97,7 +97,7 @@ const AnswerCard = (props) => {
                         <Avatar size={"sm"} />
                         <Box display={"flex"} flexDirection={"column"}>
                             {/* <Text fontSize={"smaller"}>Fidal Mathew</Text> */}
-                            <Text fontSize={"smaller"}>{props.user}</Text>
+                            <Text fontSize={"smaller"}>{props.user.slice(0,7) + '...' + props.user.slice(-4)}</Text>
                         </Box>
                     </HStack>
                     <HStack alignItems={"center"}>

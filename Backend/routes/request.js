@@ -21,7 +21,7 @@ router.post('/add-requests', async (req, res) => {
     try {
         existingRequest = await Request.findOne({ address: address, nftType: nftType, isApproved: true })
         if (existingRequest) {
-            return res.status(500).json({ message: "Not authorized" })
+            return res.status(500).json({ message: "ALready Approved" })
         }
     }
     catch (e) {

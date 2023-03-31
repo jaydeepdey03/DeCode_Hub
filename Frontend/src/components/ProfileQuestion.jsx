@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Card, CardBody, CardHeader, CardFooter, Center, Flex, Heading, HStack, IconButton, Image, SimpleGrid, Stack, Text, VStack } from '@chakra-ui/react';
 
-const ProfileQuestion = () => {
+const ProfileQuestion = (props) => {
     return (
         <Card maxW='md'>
             <CardHeader>
@@ -9,7 +9,7 @@ const ProfileQuestion = () => {
                         {/* <Avatar name='Segun Adebayo' src='https://api.dicebear.com/6.x/identicon/svg?seed=Fluffy' /> */}
 
                         <Box justifyContent={"center"} >
-                            <Heading size='md' noOfLines={[1]}>Title</Heading>
+                            <Heading size='md' noOfLines={[1]}>{props.question.title}</Heading>
                         </Box>
                     </Flex>
                     <IconButton
@@ -22,9 +22,7 @@ const ProfileQuestion = () => {
             </CardHeader>
             <CardBody>
                 <Text noOfLines={[1]}>
-                    With Chakra UI, I wanted to sync the speed of development with the speed
-                    of design. I wanted the developer to be just as excited as the designer to
-                    create a screen.
+                    {props.question.description}
                 </Text>
             </CardBody>
             <CardFooter justify='center' color={"blue.400"}

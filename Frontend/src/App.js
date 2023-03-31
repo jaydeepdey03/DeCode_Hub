@@ -15,12 +15,12 @@ function App() {
 
 
   const { walletAddress } = useGlobalContext();
-  const address = "tz1hxTwWPfqAAmqp9RiXoWBi1pTLteHD6eaN";
+  const address = ["tz1hxTwWPfqAAmqp9RiXoWBi1pTLteHD6eaN", "tz1gXMkrmVXQGyHcVmEfWUMPtuJtASRKwddY"];
 
   const [isAdmin, setisAdmin] = useState(false);
 
   useEffect(() => {
-    if (walletAddress === address) {
+    if (address.includes(walletAddress)) {
       setisAdmin(true);
     }
   }, [walletAddress]);
@@ -29,11 +29,11 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={walletAddress ? (isAdmin ? <Admin /> : <Profile />) : <Home />} />
-        <Route path="/query" element={walletAddress ? (isAdmin ? <Admin /> : <Query />) : <Home />} />
-        <Route path="/answer/:id" element={walletAddress ? (isAdmin ? <Admin /> : <Answer />) : <Home />} />
+        <Route path="/profile" element={walletAddress ? <Profile /> : <Home />} />
+        <Route path="/query" element={walletAddress ? <Query /> : <Home />} />
+        <Route path="/answer/:id" element={walletAddress ? <Answer /> : <Home />} />
         <Route path="/admin" element={walletAddress ? (isAdmin ? <Admin /> : <Home />) : <Home />} />
-        <Route path="/askQuestion" element={walletAddress ? (isAdmin ? <Admin /> : <AskQuestion />) : <Home />} />
+        <Route path="/askQuestion" element={walletAddress ? <AskQuestion /> : <Home />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </>

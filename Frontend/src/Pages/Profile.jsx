@@ -20,6 +20,7 @@ function Profile() {
 
     const [userNfts, setUserNfts] = useState([])
     const [requests, setRequests] = useState([])
+    const [questions, setQuestions] = useState([])
 
     const navigate = useNavigate()
 
@@ -58,10 +59,26 @@ function Profile() {
                 console.log(error)
             }
         }
+        const getQuestions = async () => {
+            try {
+                const URL = "http://localhost:4000/user"
+                const response = await axios.post(`${URL}/get-question-by-user`, {
+                    userId: userId
+                })
+                setQuestions(response.data)
+                console.log("aryan",response.data)
+            }
+            catch (error) {
+                console.log(error)
+
+            }
+        }
+
 
         if (userId) {
             getNFTsByOwner()
             getUpvotes()
+            getQuestions()
         }
     }, [userId, walletAddress])
 
@@ -111,7 +128,7 @@ function Profile() {
 
     return (
         <>
-            <Box bg="background" height={"100%"}>
+            <Box bg="background" minH={"100%"}>
                 <Navbar />
                 <Flex flexDirection={"column"} alignItems={"center"}>
                     <Text color={"white"} fontSize={"3xl"} as="b" marginBottom={"7"}>Profile</Text>
@@ -168,11 +185,9 @@ function Profile() {
                     <Box padding="5" >
                         <Center padding="5">
                             <SimpleGrid columns={[1, 2, 3]} gap={6} width={"5xl"}>
-                                <ProfileQuestion />
-                                <ProfileQuestion />
-                                <ProfileQuestion />
-                                <ProfileQuestion />
-                                <ProfileQuestion />
+                                {questions.map((question, idx) => {
+                                    return <ProfileQuestion key={idx} question={question} />
+                                })}                                
                             </SimpleGrid>
                         </Center>
                     </Box>

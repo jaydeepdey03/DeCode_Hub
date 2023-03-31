@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const User = require('../models/user')
 const Answer=require('../models/answer')
+const Question=require('../models/question')
 
 router.post('/signup', async (req, res) => {
     const address = req.body.address
@@ -44,6 +45,16 @@ router.post("/all-upvotes", async (req, res) => {
   catch (error) {
     res.status(500).json({error, msg: 'Error getting upvotes'})
   }
+});
+router.post('/get-question-by-user', async (req, res) => {
+    try {
+        const question = await Question.find({ "userId": req.body.userId })
+        console.log(question);
+        return res.json(question).status(200);
+    } catch (err) {
+        console.error(err);
+        return res.json(err).status(500);
+    }
 });
 
 module.exports = router;

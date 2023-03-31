@@ -17,6 +17,9 @@ const Answer = () => {
     const { userId } = useGlobalContext()
 
     const URL = "http://localhost:4000"
+    const newAnswer=async(newans)=>{
+        setAnswers([...answers,newans])
+    }
 
     useEffect(() => {
         const getQuestions = async () => {
@@ -50,6 +53,7 @@ const Answer = () => {
                         // if question is not empty show the question card
                         userQuestion !== "" &&
                         <QuestionCard key={question._id}
+                            newAnswer={newAnswer}
                             id={question._id}
                             user={userQuestion}
                             title={question.title}
@@ -66,7 +70,7 @@ const Answer = () => {
                         <AnswerCard
                             key={answer._id}
                             id={answer._id}
-                            user={answer.userId}
+                            user={answer.userId.account}
                             content={answer.content}
                             code={answer.code}
                             codeLanguage={answer.codeLanguage}

@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import useGlobalContext from "../hooks/useGlobalContext";
 // new content
-import { useParams } from "react-router-dom"
+import { Router, useParams } from "react-router-dom"
 import AnswerCard from "../components/AnswerCard"
 
 
@@ -60,7 +60,7 @@ const QuesionCard = (props) => {
             })
             console.log(res)
             // res = res.data;
-            setAnswers(...answers, res.data);
+            props.newAnswer(res.data)
         }
         catch (error) {
             console.log(error)
