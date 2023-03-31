@@ -24,7 +24,6 @@ const Answer = () => {
                 const ques = await axios.get(`${URL}/question/get-question/${id}`)
                 setQuestion(ques.data[0])
                 setUserQuestion(ques.data[0].userId.account)
-                console.log("ads", ques.data[0])
             }
             catch (err) {
                 console.log(err)
@@ -33,7 +32,6 @@ const Answer = () => {
 
         const getAnswers = async () => {
             const answers = await axios.get(`${URL}/answer/answers/${id}`)
-            console.log(answers.data)
             setAnswers(answers.data)
         }
         getQuestions();
@@ -63,15 +61,15 @@ const Answer = () => {
                     }
                     {/* if no answers show a text 'no one answered with suitable margin'*/}
                     {answers.length === 0 && <Text color={"white"}>No one has answered this question yet</Text>}
-
-
                     {/* map all the answers */}
-                    {answers.map(answer => (
+                    {answers!==undefined && answers.map(answer => (
                         <AnswerCard
                             key={answer._id}
                             id={answer._id}
                             user={answer.userId}
                             content={answer.content}
+                            code={answer.code}
+                            codeLanguage={answer.codeLanguage}
                             upvotes={answer.upvotes}
                             downvotes={answer.downvotes}
                         />

@@ -14,9 +14,6 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import useGlobalContext from "../hooks/useGlobalContext";
-
-
-
 // new content
 import { useParams } from "react-router-dom"
 import AnswerCard from "../components/AnswerCard"
@@ -27,18 +24,11 @@ const QuesionCard = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { userId } = useGlobalContext();
     const [answer, setAnswer] = useState({
-        // title: '',
         code: '',
-        language: '',
-        description: ''
+        codeLanguage: '',
+        description: '',
     })
-
-
-
-
     // new content
-
-
     const [question, setQuestion] = useState({})
     const [answers, setAnswers] = useState([])
     const { id } = useParams()
@@ -47,41 +37,15 @@ const QuesionCard = (props) => {
 
     const URL = "http://localhost:4000"
 
-    useEffect(() => {
-        const getQuestions = async () => {
-            const ques = await axios.get(`${URL}/question/get-question/${id}`)
-            setQuestion(ques.data[0])
-            console.log(ques.data[0])
-        }
-        const getAnswers = async () => {
-            const answers = await axios.get(`${URL}/answer/answers/${id}`)
-            console.log(answers.data)
-            setAnswers(answers.data)
-        }
-        getQuestions();
-        getAnswers();
-    }, [id, userId])
-
-    // c.................
-
-
-
-
-
-
-
-
-
-
     const handleAnswer = (e) => {
         const { name, value } = e.target
         setAnswer({ ...answer, [name]: value })
     }
-
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
         // submit and close the modal
+        e.preventDefault()
         onClose()
-        console.log(answer)
+        console.log(answer, 'answer state in question card when submitted')
         try {
             const URL = "http://localhost:4000/answer"
             console.log(answer.description)
@@ -91,7 +55,7 @@ const QuesionCard = (props) => {
                 questionId: props.id,
                 userId: userId,
                 code: answer.code,
-                codeLanguage: answer.language,
+                codeLanguage: answer.codeLanguage,
                 content: answer.description
             })
             console.log(res)
@@ -133,15 +97,15 @@ const QuesionCard = (props) => {
                                         <HStack alignItems={"center"} justifyContent={"space-between"} padding={"2"}>
                                             <FormLabel>Code</FormLabel>
                                             <MenuButton size={"sm"} px={2} py={1} as={Button} rightIcon={<ChevronDownIcon />}>
-                                                {answer.language === '' ? 'Select Language' : answer.language}
+                                                {answer.codeLanguage === '' ? 'Select Language' : answer.codeLanguage}
                                             </MenuButton>
                                         </HStack>
                                         <MenuList>
-                                            <MenuItem onClick={() => setAnswer({ ...answer, language: 'Javascript' })}>Javascript</MenuItem>
-                                            <MenuItem onClick={() => setAnswer({ ...answer, language: 'C++' })}>C++</MenuItem>
-                                            <MenuItem onClick={() => setAnswer({ ...answer, language: 'CSS' })}>CSS</MenuItem>
-                                            <MenuItem onClick={() => setAnswer({ ...answer, language: 'Java' })}>Java</MenuItem>
-                                            <MenuItem onClick={() => setAnswer({ ...answer, language: 'Python' })}>Python</MenuItem>
+                                            <MenuItem onClick={() => setAnswer({ ...answer, codeLanguage: 'javascript' })}>Javascript</MenuItem>
+                                            <MenuItem onClick={() => setAnswer({ ...answer, codeLanguage: 'c++' })}>C++</MenuItem>
+                                            <MenuItem onClick={() => setAnswer({ ...answer, codeLanguage: 'css' })}>CSS</MenuItem>
+                                            <MenuItem onClick={() => setAnswer({ ...answer, codeLanguage: 'java' })}>Java</MenuItem>
+                                            <MenuItem onClick={() => setAnswer({ ...answer, codeLanguage: 'python' })}>Python</MenuItem>
                                         </MenuList>
                                     </Menu>
                                     <Textarea name="code" onChange={handleAnswer} placeholder="Code (if any)" />
@@ -153,10 +117,7 @@ const QuesionCard = (props) => {
                             </ModalBody>
 
                             <ModalFooter justifyContent={"space-between"}>
-                                <Button colorScheme='blue' onClick={(e) => {
-                                    e.preventDefault()
-                                    handleSubmit()
-                                }} variantColor="blue" mr={3} >
+                                <Button colorScheme='blue' onClick={handleSubmit} variantColor="blue" mr={3} >
                                     Answer Now
                                 </Button>
                             </ModalFooter>
@@ -168,7 +129,7 @@ const QuesionCard = (props) => {
                     </Text>
                     {/* Code box */}
                     <Center marginTop={"4"} borderRadius={"16px"} alignItems={"center"} justifyContent={"center"}>
-                        <SyntaxHighlighter language={`${props.codeLanguage.toLowerCase() || 'javascript'}`} style={vscDarkPlus} wrapLines={true}>
+                        <SyntaxHighlighter language={`${props.codeLanguage.toLowerCase()}`} style={vscDarkPlus} wrapLines={true}>
                             {`${props.code}`}
                         </SyntaxHighlighter>
                     </Center>

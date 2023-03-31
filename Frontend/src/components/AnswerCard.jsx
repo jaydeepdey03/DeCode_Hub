@@ -17,19 +17,19 @@ const AnswerCard = (props) => {
     const [countDislike, setcountDislike] = useState(props.downvotes.length)
 
     const { userId } = useGlobalContext();
-    console.log("userId-------", userId)
-    const codeString = props.content
+
+    // console.table({...props, state: 'props'})
+
+   // props is coming undefined
+
 
     useEffect(() => {
-        console.log(props.upvotes)
         props.upvotes.map((val, ind) => {
             if (val.upvote === userId) {
                 setToggleLike(true)
                 setToggleDisLike(false)
             }
         })
-
-        console.log(props.downvotes)
         props.downvotes.map((val, ind) => {
             if (val.downvote === userId
             ) {
@@ -79,19 +79,19 @@ const AnswerCard = (props) => {
         <Card width={"3xl"} padding={"5"}>
             <CardBody>
                 {/* Problem desc*/}
-                <Text>
+                {/* <Text>
                     Correct. Use one of the alternative implementations available:
-                </Text>
+                </Text> */}
                 {/* Code box */}
                 <Center marginTop={"4"} margin={"2"} borderRadius={"16px"} alignItems={"center"} justifyContent={"center"} wrapLongLines={true}>
 
-                    <SyntaxHighlighter language="c" style={vscDarkPlus}>
-                        {codeString}
+                    <SyntaxHighlighter language={props.codeLanguage.toLowerCase()} style={vscDarkPlus}>
+                        {props.code}
                     </SyntaxHighlighter>
 
                 </Center>
                 {/* Furthur Text */}
-                {/* <Text marginTop={"4"}>Is this possible as illustrated above, or in the .pylintrc configuration file for example?</Text> */}
+                <Text marginTop={"4"}>{props.content}</Text>
                 <Flex justifyContent={"space-between"} marginTop={"7"}>
                     <HStack>
                         <Avatar size={"sm"} />

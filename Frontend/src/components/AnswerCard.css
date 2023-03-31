@@ -1,4 +1,5 @@
 pre {
-    height: 20rem;
+    max-height: 20rem;
+    height: 100%;
     overflow-y: auto !important;
 }
