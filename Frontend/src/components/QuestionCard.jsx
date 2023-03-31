@@ -34,10 +34,7 @@ const QuesionCard = (props) => {
     })
 
 
-
-
     // new content
-
 
     const [question, setQuestion] = useState({})
     const [answers, setAnswers] = useState([])
@@ -61,16 +58,6 @@ const QuesionCard = (props) => {
         getQuestions();
         getAnswers();
     }, [id, userId])
-
-    // c.................
-
-
-
-
-
-
-
-
 
 
     const handleAnswer = (e) => {
@@ -177,7 +164,7 @@ const QuesionCard = (props) => {
 
                 </CardBody>
             </Card>
-            {answers.map(answer => (
+            {/* {answers.map(answer => (
                 <AnswerCard
                     key={answer._id}
                     id={answer._id}
@@ -186,7 +173,7 @@ const QuesionCard = (props) => {
                     upvotes={answer.upvotes}
                     downvotes={answer.downvotes}
                 />
-            ))}
+            ))} */}
         </>
     )
 }
