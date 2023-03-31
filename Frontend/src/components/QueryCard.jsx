@@ -11,7 +11,7 @@ const QueryCard = (props) => {
 
     const text = props.description
     return (
-        <Card marginBottom={"7"} width={"3xl"}>
+        <Card minW={"lg"} marginBottom={"7"}>
             <CardBody>
                 <Flex flexDirection={"column"}>
                     <Heading size={"sm"} >{props.title}</Heading>

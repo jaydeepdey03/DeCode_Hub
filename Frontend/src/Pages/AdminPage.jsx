@@ -1,8 +1,8 @@
+import Navbar from '../components/Navbar'
 import { Box } from "@chakra-ui/react"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import MintRequest from "../components/MintRequest"
-import Navbar from "../components/Navbar"
 
 const Admin = () => {
     const [requests, setRequests] = useState([])

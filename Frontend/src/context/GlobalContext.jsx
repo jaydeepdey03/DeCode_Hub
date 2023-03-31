@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { BeaconWallet } from "@taquito/beacon-wallet";
 import { TezosToolkit } from "@taquito/taquito";
 import axios from "axios";
@@ -60,6 +60,7 @@ const GlobalContextProvider = ({ children }) => {
                 success: true,
             };
         } catch (error) {
+            console.error(error, 'err')
             return {
                 success: false,
                 error,
@@ -83,6 +84,10 @@ const GlobalContextProvider = ({ children }) => {
             console.error(error);
         }
     }
+
+    useEffect(() => {
+        checkIfWalletConnected()
+    }, [])
 
 
     return (
