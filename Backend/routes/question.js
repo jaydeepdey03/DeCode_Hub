@@ -2,10 +2,9 @@ const express = require('express')
 const router = express.Router()
 const Question = require('../models/question')
 const mongodb = require('mongodb');
-
 router.post('/add-question', async (req, res) => {
     const { userId, title, description, code, codeLanguage, image } = req.body
-
+    console.log(userId)
     const question = new Question({
         userId: new mongodb.ObjectId(userId),
         title: title,
@@ -26,8 +25,8 @@ router.post('/add-question', async (req, res) => {
 
 router.get('/get-question', async (req, res) => {
     try {
-        const res = await Question.find()
-        return res.json(res).status(200)
+        const ques = await Question.find()
+        return res.json(ques).status(200)
     }
     catch (err) {
         return res.json(err).status(500)

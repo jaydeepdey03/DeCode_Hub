@@ -15,6 +15,15 @@ const answerSchema = new Schema({
         type: String,
         required: true,
     },
+    code:{
+        type:String,
+        // required:true,
+    },
+    codeLanguage:
+    {
+        type:String,
+        // required:true
+    },
     upvotes: [{
         upvote: {
             type: Schema.Types.ObjectId,

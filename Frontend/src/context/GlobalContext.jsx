@@ -1,17 +1,30 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { BeaconWallet } from "@taquito/beacon-wallet";
+import { TezosToolkit } from "@taquito/taquito";
+import axios from "axios";
+// export const contractAddress = "KT1NSMmpfLZUBY4naxi4CKQ4dhU692F59G3t"
 
 export const Context = createContext();
-
 const GlobalContextProvider = ({ children }) => {
 
-    const [walletaddress, setWalletaddress] = useState(null);
+
+    const [walletAddress, setWalletAddress] = useState("");
+
+    // initialization 
+    const [userId, setUserId] = useState("");
+
     const preferredNetwork = "ghostnet";
     const options = {
         name: "NFT",
         preferredNetwork: preferredNetwork,
     };
     const wallet = new BeaconWallet(options);
+
+    const Tezos = new TezosToolkit("https://ghostnet.smartpy.io");
+    Tezos.setWalletProvider(wallet);
+
+
+    // function calls 
 
     const getActiveAccount = async () => {
         return await wallet.client.getActiveAccount();
@@ -47,6 +60,7 @@ const GlobalContextProvider = ({ children }) => {
                 success: true,
             };
         } catch (error) {
+            console.error(error, 'err')
             return {
                 success: false,
                 error,
@@ -54,14 +68,39 @@ const GlobalContextProvider = ({ children }) => {
         }
     };
 
+    // backend methods
+    const URL = "localhost:4000"
+
+    const getUserId = async () => {
+        try {
+
+            const user = await axios.post('http://localhost:4000/user/signup', {
+                address: walletAddress
+            });
+            console.log(user.data._id);
+            setUserId(user.data._id);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
+    useEffect(() => {
+        checkIfWalletConnected()
+    }, [])
+
+
     return (
         <Context.Provider value={{
-            walletaddress,
-            setWalletaddress,
+            walletAddress,
+            setWalletAddress,
             connectWallet,
             disconnectWallet,
             getActiveAccount,
             checkIfWalletConnected,
+            Tezos,
+            userId,
+            getUserId
         }}>
             {children}
         </Context.Provider>
