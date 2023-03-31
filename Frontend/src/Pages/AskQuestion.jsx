@@ -6,17 +6,25 @@ import {
     Input,
     Textarea,
     Center,
-    Button
+    Button,
+    Menu,
+    HStack,
+    MenuList,
+    MenuItem,
+    MenuButton
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import axios from 'axios'
 import useGlobalContext from '../hooks/useGlobalContext'
-
+// import useNavigate
+import { useNavigate } from 'react-router-dom'
+import { ChevronDownIcon } from '@chakra-ui/icons'
 const AskQuestion = () => {
-    const {userId}=useGlobalContext();
+    const { userId } = useGlobalContext();
+    const navigate = useNavigate()
     const [input, setInput] = useState({
-        title: '', description: '', code: '',codeLangauge:'',image:''
+        title: '', description: '', code: '', codeLanguage: '', image: ''
     })
 
     const handleOnChange = (e) => {
@@ -25,30 +33,31 @@ const AskQuestion = () => {
     }
 
 
-    const handleSubmit = async() => {
+    const handleSubmit = async () => {
 
         console.log("jaydeep")
-        const URL="http://localhost:4000/question/"
+        const URL = "http://localhost:4000/question/"
         // e.preventDefault()
 
         console.log(userId, input.title)
-            try
-            {
-                const res = await axios.post(`${URL}add-question`,{
-                    userId:userId,
-                    title:input.title,
-                    description:input.description,
-                    code:input.code,
-                    codeLangauge:input.codeLangauge,
-                    image:input.image
-                })
-                console.log(res)            
-            }
-            catch(err)
-            {
-                console.log(err)
-            }
-        
+        try {
+            const res = await axios.post(`${URL}add-question`, {
+                userId: userId,
+                title: input.title,
+                description: input.description,
+                code: input.code,
+                codeLanguage: input.codeLanguage || 'javascript',
+                image: input.image
+            })
+            console.log(res)
+
+            // navigate to query page
+            navigate('/query')
+        }
+        catch (err) {
+            console.log(err)
+        }
+
     }
 
     return (
@@ -61,7 +70,26 @@ const AskQuestion = () => {
                         <FormControl color="white" width={"xl"}>
                             <FormLabel>Title</FormLabel>
                             <Input required color={"black"} name="title" onChange={handleOnChange} marginBottom={"4"} backgroundColor="white" placeholder='Enter your Question' />
-                            <FormLabel>Code</FormLabel>
+                            <FormControl>
+                                {/* <FormLabel>Title</FormLabel>
+                                    <Input name="title" onChange={handleAnswer} placeholder="Answer title" /> */}
+                                <Menu>
+                                    <HStack alignItems={"center"} justifyContent={"space-between"} padding={"2"}>
+                                        <FormLabel>Code</FormLabel>
+                                        <MenuButton backgroundColor={"white"} color={"black"} size={"sm"} px={2} py={1} as={Button} rightIcon={<ChevronDownIcon />}>
+                                            {input.codeLanguage === '' ? 'Select Language' : input.codeLanguage}
+                                        </MenuButton>
+                                    </HStack>
+                                    <MenuList>
+                                        <MenuItem color={"black"} onClick={() => setInput({ ...input, codeLanguage: 'Javascript' })}>Javascript</MenuItem>
+                                        <MenuItem color={"black"} onClick={() => setInput({ ...input, codeLanguage: 'C++' })}>C++</MenuItem>
+                                        <MenuItem color={"black"} onClick={() => setInput({ ...input, codeLanguage: 'CSS' })}>CSS</MenuItem>
+                                        <MenuItem color={"black"} onClick={() => setInput({ ...input, codeLanguage: 'Java' })}>Java</MenuItem>
+                                        <MenuItem color={"black"} onClick={() => setInput({ ...input, codeLanguage: 'Python' })}>Python</MenuItem>
+                                    </MenuList>
+                                </Menu>
+
+                            </FormControl>
                             <Textarea required height={"36"} name="code" color={"black"} onChange={handleOnChange}
                                 marginBottom={"4"} backgroundColor="white" placeholder='Put your code' />
                             <FormLabel>Description</FormLabel>

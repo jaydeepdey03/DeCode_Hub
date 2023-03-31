@@ -1,11 +1,14 @@
 import { Avatar, Box, Card, CardBody, Container, Flex, Heading, HStack, Text, VStack } from "@chakra-ui/react"
-import { useState } from "react"
-import { FiThumbsUp, FiThumbsDown } from 'react-icons/fi'
-import { HiThumbDown, HiThumbUp } from 'react-icons/hi'
+import useGlobalContext from "../hooks/useGlobalContext"
+// import { useState } from "react"
+// import { FiThumbsUp, FiThumbsDown } from 'react-icons/fi'
+// import { HiThumbDown, HiThumbUp } from 'react-icons/hi'
 
 const QueryCard = (props) => {
-    const [toggleLike, setToggleLike] = useState(false)
-    const [count, setCount] = useState(5)
+    // const [toggleLike, setToggleLike] = useState(false)
+    // const [count, setCount] = useState(5)
+    const { walletAddress } = useGlobalContext()
+
     const text = props.description
     return (
         <Card marginBottom={"7"} width={"3xl"}>
@@ -13,17 +16,17 @@ const QueryCard = (props) => {
                 <Flex flexDirection={"column"}>
                     <Heading size={"sm"} >{props.title}</Heading>
                     <Container paddingLeft={0}>
-                        <Text>{text.slice(0,170) + "..."}<Text as={"sp"} color={"blue.500"}>10 Answers</Text></Text>
+                        <Text>{text.slice(0, 170) + "..."}<Text as={"sp"} color={"blue.500"}>10 Answers</Text></Text>
                     </Container>
                     <Flex justifyContent={"space-between"} marginTop={"3"}>
                         <HStack>
                             <Avatar size={"sm"} />
                             <Box display={"flex"} flexDirection={"column"}>
-                                <Text fontSize={"smaller"}>Fidal Mathew</Text>
-                                <Text fontSize={"smaller"}>tz1gXMk...tuJtASRKwddY</Text>
+                                {/* <Text fontSize={"smaller"}>Fidal Mathew</Text> */}
+                                <Text fontSize={"smaller"}>{props.user === walletAddress ? "You" : props.user}</Text>
                             </Box>
                         </HStack>
-                        <HStack alignItems={"center"}>
+                        {/* <HStack alignItems={"center"}>
                             {!toggleLike ? <FiThumbsUp onClick={() => {
                                 setToggleLike(prev => !prev)
                                 setCount(prev=>prev+1)
@@ -36,7 +39,7 @@ const QueryCard = (props) => {
                             <Text>{count}</Text>
                             <FiThumbsDown />
                             <Text>-100</Text>
-                        </HStack>
+                        </HStack> */}
                     </Flex>
                 </Flex>
             </CardBody>

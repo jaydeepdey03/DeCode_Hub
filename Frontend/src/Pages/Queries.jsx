@@ -33,6 +33,7 @@ const Query = () => {
                             code={question.code}
                             codeLanguage={question.codeLanguage}
                             image={question.image}
+                            user={question.userId.account}
                         />
                     </Link>
                 ))}

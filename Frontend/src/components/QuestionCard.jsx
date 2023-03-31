@@ -25,7 +25,7 @@ import AnswerCard from "../components/AnswerCard"
 
 const QuesionCard = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const {userId}=useGlobalContext();
+    const { userId } = useGlobalContext();
     const [answer, setAnswer] = useState({
         // title: '',
         code: '',
@@ -38,7 +38,7 @@ const QuesionCard = (props) => {
 
     // new content
 
-    
+
     const [question, setQuestion] = useState({})
     const [answers, setAnswers] = useState([])
     const { id } = useParams()
@@ -78,33 +78,31 @@ const QuesionCard = (props) => {
         setAnswer({ ...answer, [name]: value })
     }
 
-    const handleSubmit = async() => {
+    const handleSubmit = async () => {
         // submit and close the modal
         onClose()
         console.log(answer)
-        try 
-        {
-            const URL="http://localhost:4000/answer"
+        try {
+            const URL = "http://localhost:4000/answer"
             console.log(answer.description)
             console.log(answer.code)
             console.log(answer.language)
-            const res=await axios.post(`${URL}/add-answer`,{
-                questionId:props.id,
-                userId:userId,
-                code:answer.code,
-                codeLanguage:answer.language,
-                content:answer.description 
+            const res = await axios.post(`${URL}/add-answer`, {
+                questionId: props.id,
+                userId: userId,
+                code: answer.code,
+                codeLanguage: answer.language,
+                content: answer.description
             })
             console.log(res)
             // res = res.data;
-            setAnswers(...answers,res.data);
-        } 
-        catch (error) 
-        {
+            setAnswers(...answers, res.data);
+        }
+        catch (error) {
             console.log(error)
         }
 
-    }  
+    }
 
     return (
         <>
@@ -115,8 +113,8 @@ const QuesionCard = (props) => {
                         <Box display={"flex"} alignItems={"start"} justifyContent={"start"} flexDirection="column">
                             <Text as="b" justifyContent={"start"} fontSize={"lg"}>{props.title}</Text>
                             <Flex width={"full"} justifyContent={"start"}>
-                                <Text>Asked by: </Text>
-                                <Text>{props.user}</Text>
+                                <Text>Asked by: &nbsp;</Text>
+                                <Text as="b"> {props.user.slice(0, 8) + "..." + props.user.slice(-4)} </Text>
                             </Flex>
                             <Text></Text>
                         </Box>
@@ -166,32 +164,29 @@ const QuesionCard = (props) => {
                     </Modal>
                     {/* Problem desc*/}
                     <Text>
-                        I want to set up a GitLab CI Pipeline to perform static code analysis on a number of GitLab project repos, each containing several Python scripts. So far the proof of concept that I've set up and run, works perfectly by analysing and generating a score report.........but Pylint analyses Python files in my current GitLab Pipeline working directory.
-                        What I'd however like to do is set up the Pipeline to have the flexibility of allowing me redirect Pylint to analyse Python files that exist in other locations other than my working directory, in other words, one or more external GitLab repositories.
-                        In my existing GitLab pipeline, below is the command that executes the Pylint analysis:
+                        {props.description}
                     </Text>
                     {/* Code box */}
                     <Center marginTop={"4"} borderRadius={"16px"} alignItems={"center"} justifyContent={"center"}>
-                        <SyntaxHighlighter language="python" style={vscDarkPlus} wrapLines={true}>
-                            {`pylint --exit-zero --output-format=text $(find -type f -name "*.py" ! -path "**/.venv/**")`}
-
+                        <SyntaxHighlighter language={`${props.codeLanguage.toLowerCase() || 'javascript'}`} style={vscDarkPlus} wrapLines={true}>
+                            {`${props.code}`}
                         </SyntaxHighlighter>
                     </Center>
                     {/* Furthur Text */}
-                    <Text marginTop={"4"}>Is this possible as illustrated above, or in the .pylintrc configuration file for example?</Text>
+                    {/* <Text marginTop={"4"}>Is this possible as illustrated above, or in the .pylintrc configuration file for example?</Text> */}
 
                 </CardBody>
             </Card>
-             {answers.map(answer => (
-                        <AnswerCard
-                            key={answer._id}
-                            id={answer._id}
-                            user={answer.userId}
-                            content={answer.content}
-                            upvotes={answer.upvotes}
-                            downvotes={answer.downvotes}
-                        />
-                    ))}
+            {answers.map(answer => (
+                <AnswerCard
+                    key={answer._id}
+                    id={answer._id}
+                    user={answer.userId}
+                    content={answer.content}
+                    upvotes={answer.upvotes}
+                    downvotes={answer.downvotes}
+                />
+            ))}
         </>
     )
 }

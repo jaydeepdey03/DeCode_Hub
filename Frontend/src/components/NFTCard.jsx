@@ -1,6 +1,16 @@
 import { Box, Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Heading, Image, Stack, Text } from "@chakra-ui/react"
 
-const NFTCard = () => {
+const NFTCard = (props) => {
+
+    const nftMap = {
+        1: {
+            title: "5Upvotes",
+            desc: "Achievement for 5upvotes for answering questions "
+        }
+    }
+
+    console.log(props.nftTypeContract);
+
     return (
         <Card maxW='sm'>
             <CardBody>
@@ -11,9 +21,10 @@ const NFTCard = () => {
                     height={"xs"}
                 />
                 <Stack mt='6' spacing='3'>
-                    <Heading size='md' margin={"auto"}>#100Question</Heading>
+                    <Heading size='md' margin={"auto"}>{nftMap[props.nftTypeContract].title}</Heading>
+                    <Heading size='md' margin={"auto"}>#{props.id}</Heading>
                     <Text align={"center"} as="">
-                        Achievement for 100 Question
+                        {nftMap[props.nftTypeContract].desc}
                     </Text>
                     {/* <Text color='blue.600' fontSize='2xl'>
                         $450

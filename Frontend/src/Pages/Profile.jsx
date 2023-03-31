@@ -11,6 +11,8 @@ import useGlobalContext from '../hooks/useGlobalContext';
 function Profile() {
 
     const contractAddress = "KT1NSMmpfLZUBY4naxi4CKQ4dhU692F59G3t"
+    const nftTypeContract = 1;
+
     // get NFTs by owner
 
     const [userNfts, setUserNfts] = useState([])
@@ -82,13 +84,15 @@ function Profile() {
                 // if(ans.message && ans.message==="Request already exists"){
                 //     console.log("Request already exists")
                 // }
+                // 
                 if (ans.walletAddress) {
                     setRequests([...requests, ans.data]);
                 }
             }
         }
+        // if(requests.length === 0)
         checkRequest();
-    }, [upvotes, walletAddress])
+    }, [upvotes, walletAddress, requests])
 
     useEffect(() => {
         const getRequests = async () => {
@@ -96,6 +100,7 @@ function Profile() {
             const res = await axios.get("http://localhost:4000/request/get-requests");
             const ans = res.data;
             setRequests(ans)
+            console.log("requests", ans)
         }
         getRequests();
 
@@ -131,28 +136,30 @@ function Profile() {
                             </VStack>
                         </CardBody>
                     </Card>
-                    <Text color={"white"} fontSize={"2xl"} as="b">Remaining Requests</Text>
+
+
+                    {requests.length > 0 && <Text color={"white"} fontSize={"2xl"} as="b">Remaining Requests</Text>}
                     <Box marginTop={"2"} >
                         <VStack padding={"5"}>
-                            <Card width={"4xl"}>
-                                <CardBody display={"flex"} justifyContent={"space-between"}>
-                                    <HStack>
-                                        {/* <Avatar size={"sm"} /> */}
-                                        {requests.map((request) => {
-                                            return <Text fontSize={"sm"}>Congratulations! You have Earned <span style={{ fontWeight: '700' }}>#{request.nftType}</span> NFT. You'll be recieving the NFT soon</Text>
-                                        })}
-                                    </HStack>
-                                </CardBody>
-                            </Card>
+                            {requests.map((request) => {
+                                return <Card width={"4xl"}>
+                                    <CardBody display={"flex"} justifyContent={"space-between"}>
+                                        <HStack>
+                                            {/* <Avatar size={"sm"} /> */}
+                                            <Text fontSize={"sm"}>Congratulations! You have Earned <span style={{ fontWeight: '700' }}>#{request.nftType}</span> NFT. You'll be recieving the NFT soon</Text>
+                                        </HStack>
+                                    </CardBody>
+                                </Card>
+                            })}
                         </VStack>
                     </Box>
                     <Heading color={"white"} margin={"10"} fontSize={"3xl"} as="b">Your NFTs</Heading>
                     <SimpleGrid columns={[1, 2, 3]} gap={6} width={"5xl"} paddingBottom="10">
-                        <NFTCard />
-                        <NFTCard />
-                        <NFTCard />
-                        <NFTCard />
-                        <NFTCard />
+                        {
+                            userNfts.map((val, idx) => {
+                                return <NFTCard key={idx} id={val.key.nat} nftTypeContract={nftTypeContract} />
+                            })
+                        }
                     </SimpleGrid>
                 </Flex>
             </Box>

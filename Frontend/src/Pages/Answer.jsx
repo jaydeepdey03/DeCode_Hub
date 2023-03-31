@@ -10,6 +10,7 @@ import useGlobalContext from "../hooks/useGlobalContext"
 const Answer = () => {
 
     const [question, setQuestion] = useState({})
+    const [userQuestion, setUserQuestion] = useState('')
     const [answers, setAnswers] = useState([])
     const { id } = useParams()
 
@@ -19,10 +20,17 @@ const Answer = () => {
 
     useEffect(() => {
         const getQuestions = async () => {
-            const ques = await axios.get(`${URL}/question/get-question/${id}`)
-            setQuestion(ques.data[0])
-            console.log(ques.data[0])
+            try {
+                const ques = await axios.get(`${URL}/question/get-question/${id}`)
+                setQuestion(ques.data[0])
+                setUserQuestion(ques.data[0].userId.account)
+                console.log("ads", ques.data[0])
+            }
+            catch (err) {
+                console.log(err)
+            }
         }
+
         const getAnswers = async () => {
             const answers = await axios.get(`${URL}/answer/answers/${id}`)
             console.log(answers.data)
@@ -36,23 +44,27 @@ const Answer = () => {
     // get answers for this question id
 
     return (
-        <Box bg="background" height={answers.length === 0? "100vh": "100%"} padding={"2"}>
+        <Box bg="background" minH={"100vh"} padding={"2"}>
             <Navbar queryBar={false} isAdmin={false} />
             <Center marginBottom={"7"}>
                 <VStack>
-                    <QuestionCard key={question._id}
-                        id={question._id}
-                        user={question.userId}
-                        title={question.title}
-                        description={question.description}
-                        code={question.code}
-                        codeLangauge={question.codeLangauge}
-                        image={question.image}
-                    />
+                    {
+                        // if question is not empty show the question card
+                        userQuestion !== "" &&
+                        <QuestionCard key={question._id}
+                            id={question._id}
+                            user={userQuestion}
+                            title={question.title}
+                            description={question.description}
+                            code={question.code}
+                            codeLanguage={question.codeLanguage}
+                            image={question.image}
+                        />
+                    }
                     {/* if no answers show a text 'no one answered with suitable margin'*/}
                     {answers.length === 0 && <Text color={"white"}>No one has answered this question yet</Text>}
-                    
-                    
+
+
                     {/* map all the answers */}
                     {answers.map(answer => (
                         <AnswerCard

@@ -25,7 +25,7 @@ router.post('/add-question', async (req, res) => {
 
 router.get('/get-question', async (req, res) => {
     try {
-        const ques = await Question.find()
+        const ques = await Question.find().populate('userId', 'account')
         return res.json(ques).status(200)
     }
     catch (err) {
@@ -37,7 +37,8 @@ router.get('/get-question', async (req, res) => {
 router.get('/get-question/:id', async (req, res) => {
     try {
         console.log(req.params.id);
-        const question = await Question.find({ "_id": new mongodb.ObjectId(req.params.id) });
+        const question = await Question.find({ "_id": new mongodb.ObjectId(req.params.id) }).populate('userId', 'account');
+        console.log(question);
         return res.json(question).status(200);
     } catch (err) {
         console.error(err);
