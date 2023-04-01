@@ -17,6 +17,14 @@ const Answer = () => {
     const { userId } = useGlobalContext()
 
     const URL = "http://localhost:4000"
+    const newAnswer=async(newans)=>{
+        setAnswers([...answers,newans])
+        const getAnswers = async () => {
+            const answers = await axios.get(`${URL}/answer/answers/${id}`)
+            setAnswers(answers.data)
+        }
+        getAnswers();
+    }
 
     useEffect(() => {
         const getQuestions = async () => {
@@ -24,7 +32,6 @@ const Answer = () => {
                 const ques = await axios.get(`${URL}/question/get-question/${id}`)
                 setQuestion(ques.data[0])
                 setUserQuestion(ques.data[0].userId.account)
-                console.log("ads", ques.data[0])
             }
             catch (err) {
                 console.log(err)
@@ -33,7 +40,6 @@ const Answer = () => {
 
         const getAnswers = async () => {
             const answers = await axios.get(`${URL}/answer/answers/${id}`)
-            console.log(answers.data)
             setAnswers(answers.data)
         }
         getQuestions();
@@ -52,6 +58,7 @@ const Answer = () => {
                         // if question is not empty show the question card
                         userQuestion !== "" &&
                         <QuestionCard key={question._id}
+                            newAnswer={newAnswer}
                             id={question._id}
                             user={userQuestion}
                             title={question.title}
@@ -59,19 +66,20 @@ const Answer = () => {
                             code={question.code}
                             codeLanguage={question.codeLanguage}
                             image={question.image}
+                            length={answers.length}
                         />
                     }
                     {/* if no answers show a text 'no one answered with suitable margin'*/}
                     {answers.length === 0 && <Text color={"white"}>No one has answered this question yet</Text>}
-
-
                     {/* map all the answers */}
-                    {answers.map(answer => (
+                    {answers!==undefined && answers.map(answer => (
                         <AnswerCard
                             key={answer._id}
                             id={answer._id}
-                            user={answer.userId}
+                            user={answer.userId.account}
                             content={answer.content}
+                            code={answer.code}
+                            codeLanguage={answer.codeLanguage}
                             upvotes={answer.upvotes}
                             downvotes={answer.downvotes}
                         />

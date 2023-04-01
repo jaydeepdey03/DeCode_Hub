@@ -8,18 +8,21 @@ import { Link } from 'react-router-dom'
 const Query = () => {
 
     const [questions, setQuestions] = useState([]);
-
+    const [loading, setloading] = useState(false)
     useEffect(() => {
         const getQueries = async () => {
+            setloading(true)
             const response = await axios.get("http://localhost:4000/question/get-question");
             setQuestions(response.data);
             console.log(response.data)
+            setloading(false)
         };
         getQueries();
     }, []);
 
     return (
         <Box bg="background" minHeight={"100vh"}>
+
             <Navbar queryBar={true} />
             <VStack padding={"6"}>
                 <Heading color={"white"} marginBottom={"10"}>Top Queries</Heading>
@@ -29,6 +32,7 @@ const Query = () => {
                         <QueryCard
                             key={question._id}
                             title={question.title}
+                            total={question.ans}
                             description={question.description}
                             code={question.code}
                             codeLanguage={question.codeLanguage}

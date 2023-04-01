@@ -21,7 +21,7 @@ mongoose.
   connect(process.env.MONGO_URL)
   .then(result => {
     console.log("mongodb connected")
-    app.listen(4000, ()=> {
+    app.listen(4000, () => {
       console.log("Server connected")
     })
   })

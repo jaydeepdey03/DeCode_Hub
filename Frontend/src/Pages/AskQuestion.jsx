@@ -46,7 +46,7 @@ const AskQuestion = () => {
                 title: input.title,
                 description: input.description,
                 code: input.code,
-                codeLanguage: input.codeLanguage || 'javascript',
+                codeLanguage: input.codeLanguage,
                 image: input.image
             })
             console.log(res)
@@ -62,7 +62,7 @@ const AskQuestion = () => {
 
     return (
         <>
-            <Box bg={"background"} height={"100%"}>
+            <Box bg={"background"} minH={"100vh"}>
                 <Navbar />
                 <Center>
                     <VStack padding={"10"} color={"white"} maxWidth="sm">
@@ -81,11 +81,11 @@ const AskQuestion = () => {
                                         </MenuButton>
                                     </HStack>
                                     <MenuList>
-                                        <MenuItem color={"black"} onClick={() => setInput({ ...input, codeLanguage: 'Javascript' })}>Javascript</MenuItem>
-                                        <MenuItem color={"black"} onClick={() => setInput({ ...input, codeLanguage: 'C++' })}>C++</MenuItem>
-                                        <MenuItem color={"black"} onClick={() => setInput({ ...input, codeLanguage: 'CSS' })}>CSS</MenuItem>
-                                        <MenuItem color={"black"} onClick={() => setInput({ ...input, codeLanguage: 'Java' })}>Java</MenuItem>
-                                        <MenuItem color={"black"} onClick={() => setInput({ ...input, codeLanguage: 'Python' })}>Python</MenuItem>
+                                        <MenuItem color={"black"} onClick={() => setInput({ ...input, codeLanguage: 'javascript' })}>Javascript</MenuItem>
+                                        <MenuItem color={"black"} onClick={() => setInput({ ...input, codeLanguage: 'c++' })}>C++</MenuItem>
+                                        <MenuItem color={"black"} onClick={() => setInput({ ...input, codeLanguage: 'css' })}>CSS</MenuItem>
+                                        <MenuItem color={"black"} onClick={() => setInput({ ...input, codeLanguage: 'java' })}>Java</MenuItem>
+                                        <MenuItem color={"black"} onClick={() => setInput({ ...input, codeLanguage: 'python' })}>Python</MenuItem>
                                     </MenuList>
                                 </Menu>
 
